@@ -1,0 +1,24 @@
+{
+  "buffer_distance": 0.1,
+  "compliant": true,
+  "covenant_type": "Consolidated Net Leverage Ratio",
+  "cash": 0.0,
+  "ebitda": 100.0,
+  "ratio": 3.4,
+  "source_payload": {
+    "errors": [],
+    "lineage": {
+      "cash": "Cash And Cash Equivalents",
+      "ebitda": "Operating Income + Depreciation And Amortization",
+      "total_debt": "Current Debt + Long Term Debt"
+    },
+    "source": "yfinance",
+    "ticker": "MSFT",
+    "units": "millions"
+  },
+  "threshold": 3.5,
+  "ticker": "MSFT",
+  "timestamp_utc": "2026-05-24T00:00:00+00:00",
+  "total_debt": 340.0,
+  "warning_band": 0.35
+}

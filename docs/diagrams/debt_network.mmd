@@ -1,0 +1,7 @@
+graph TD
+    HoldCo["HoldCo Revolver"] --> OpCoA["OpCo_A Term Loan A"]
+    HoldCo --> OpCoB["OpCo_B Term Loan B"]
+    OpCoA --> MinorSub1["MinorSub_1 ABL Facility"]
+    OpCoB --> MinorSub2["MinorSub_2 Equipment Notes"]
+    MinorSub1 -. "Primary breach" .-> HoldCo
+    HoldCo -. "Technical cross-default" .-> OpCoB

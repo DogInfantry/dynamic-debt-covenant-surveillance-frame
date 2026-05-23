@@ -1,5 +1,15 @@
 # Dynamic Debt Covenant Surveillance Engine
 
+![CI](https://github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![Streamlit](https://img.shields.io/badge/UI-Streamlit-red)
+![NetworkX](https://img.shields.io/badge/Graph-NetworkX-2f6f9f)
+
+## Dashboard Preview
+
+![DDCSE dashboard preview](docs/screenshots/streamlit_dashboard.png)
+
 ## Executive Summary
 
 Private Credit and Corporate Banking teams monitor covenant packages across
@@ -30,6 +40,20 @@ DDCSE is organized as a four-stage covenant surveillance pipeline:
 
 ```text
 Ingestion -> Safe AST Compilation -> Live Market Pipeline -> NetworkX Cascades
+```
+
+```mermaid
+flowchart LR
+    A["Credit Agreement Text"] --> B["Structured Ingestion"]
+    B --> C["Safe AST Compiler"]
+    C --> D["Compliance Function"]
+    E["yfinance Quarterly Statements"] --> F["FinancialDataPipeline"]
+    F --> D
+    D --> G["Variance Warning Engine"]
+    D --> H["NetworkX Cross-Default Graph"]
+    H --> I["Cascade Impact Map"]
+    G --> J["Streamlit Dashboard + Audit JSON"]
+    I --> J
 ```
 
 ### 1. Ingestion
@@ -102,6 +126,16 @@ parents and subsidiaries to flag technical cross-defaults. The same module also
 tracks covenant buffer proximity and flags warnings when a covenant is within
 10% of its breach threshold.
 
+```mermaid
+graph TD
+    HoldCo["HoldCo Revolver"] --> OpCoA["OpCo_A Term Loan A"]
+    HoldCo --> OpCoB["OpCo_B Term Loan B"]
+    OpCoA --> MinorSub1["MinorSub_1 ABL Facility"]
+    OpCoB --> MinorSub2["MinorSub_2 Equipment Notes"]
+    MinorSub1 -. "Primary breach" .-> HoldCo
+    HoldCo -. "Technical cross-default" .-> OpCoB
+```
+
 ## Streamlit Interface
 
 File: `app.py`
@@ -119,10 +153,38 @@ The Streamlit UI provides:
 - Cross-default propagation path inspection
 - Downloadable JSON audit record for each compliance run
 
+## Visual Output
+
+### Covenant Warning State
+
+![Covenant warning state](docs/screenshots/covenant_warning.png)
+
+### Cross-Default Cascade
+
+![Cross-default cascade](docs/screenshots/cross_default_graph.png)
+
+## Sample Covenant Result
+
+| Metric | Value |
+|---|---:|
+| Net Leverage Ratio | 3.40x |
+| Threshold | 3.50x |
+| Buffer Cushion | 0.10x |
+| Warning Band | 0.35x |
+| Status | Compliant, Watchlist |
+
+Sample audit output is available at
+[`docs/sample_audit_record.json`](docs/sample_audit_record.json).
+
 ## Repository Layout
 
 ```text
 .
+|-- docs/
+|   |-- architecture.md
+|   |-- diagrams/
+|   |-- sample_audit_record.json
+|   `-- screenshots/
 |-- analytics.py
 |-- app.py
 |-- audit.py

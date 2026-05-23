@@ -1,0 +1,11 @@
+flowchart LR
+    A["Credit Agreement Text"] --> B["Structured Ingestion"]
+    B --> C["Safe AST Compiler"]
+    C --> D["Compliance Function"]
+    E["yfinance Quarterly Statements"] --> F["FinancialDataPipeline"]
+    F --> D
+    D --> G["Variance Warning Engine"]
+    D --> H["NetworkX Cross-Default Graph"]
+    H --> I["Cascade Impact Map"]
+    G --> J["Streamlit Dashboard + Audit JSON"]
+    I --> J
