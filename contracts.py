@@ -54,4 +54,6 @@ class AuditRecord(TypedDict):
     compliant: bool
     buffer_distance: float | str
     warning_band: float
+    severity_score: float
+    case_name: str | None
     source_payload: dict[str, Any]

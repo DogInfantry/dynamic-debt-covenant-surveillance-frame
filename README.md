@@ -1,323 +1,226 @@
-# Dynamic Debt Covenant Surveillance Engine
+# Dynamic Debt Covenant Surveillance Engine — v2.0
 
-![CI](https://github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame/actions/workflows/ci.yml/badge.svg)
-![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![Streamlit](https://img.shields.io/badge/UI-Streamlit-red)
-![NetworkX](https://img.shields.io/badge/Graph-NetworkX-2f6f9f)
+[![CI](https://github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame/actions/workflows/ci.yml/badge.svg)](https://github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame/actions/workflows/ci.yml/badge.svg) [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org) [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE) [![Streamlit](https://img.shields.io/badge/UI-Streamlit-red)](https://streamlit.io) [![NetworkX](https://img.shields.io/badge/Graph-NetworkX-2f6f9f)](https://networkx.org)
 
-## Dashboard Preview
+A **production-grade private credit covenant surveillance prototype** built for portfolio monitoring teams, credit risk functions, and PE/credit fund professionals. Features real-case distressed credit data, AST-safe covenant compilation, NetworkX cross-default cascade modeling, and a Streamlit monitoring dashboard.
 
-![DDCSE dashboard preview](docs/screenshots/streamlit_dashboard.png)
+---
 
-## Finance / IB-Style Output
+## Real Case Coverage
 
-For a more polished stakeholder view, see the consultant-style mini-deck:
+Three real Chapter 11 bankruptcy cases, all sourced from public SEC filings, bankruptcy petitions, and court-filed First-Day Declarations:
 
-- [DDCSE Private Credit Surveillance Mini-Deck](docs/deck/DDCSE_Private_Credit_Surveillance_Mini_Deck.pptx)
-- [Banker-style output memo](docs/deck/ib_output.md)
+| Company | Ticker | Filing | NLR at Filing | Total Debt |
+|---------|--------|--------|---------------|-----------|
+| Envision Healthcare | EVHC | Ch.11 May 2023 (SDNY) | **16.6x** | $7.1B |
+| Revlon Inc | REV | Ch.11 Jun 2022 (SDNY) | **13.9x** | $3.7B |
+| Cineworld Group | CINE.L | Ch.11 Sep 2022 (SDTX) | **13.8x** | $8.9B |
 
-![DDCSE mini-deck contact sheet](docs/deck/DDCSE_mini_deck_contact_sheet.png)
+These cases illustrate the three dominant covenant-breach archetypes in private credit:
+- **LBO leverage explosion** (Envision — regulatory revenue cliff post-KKR buyout)
+- **M&A debt + operational disruption** (Revlon — Elizabeth Arden acquisition + DTC disruption)
+- **Macro event covenant cascade** (Cineworld — COVID → 22.4x NLR → waiver → re-breach)
 
-## Executive Summary
+---
 
-Private Credit and Corporate Banking teams monitor covenant packages across
-credit agreements, amendments, side letters, borrowing bases, and management
-reporting packs. In many institutions, the surveillance process remains trapped
-in spreadsheets, email workflows, PDF reviews, and manually maintained covenant
-ticklers. That operating model creates material risk:
+## Architecture: Four-Stage Pipeline
 
-- Covenant language is fragmented across legal documents and portfolio systems.
-- Financial statement inputs live in separate market data, borrower reporting,
-  and analyst spreadsheet silos.
-- Manual testing cycles are slow, inconsistent, and difficult to audit.
-- Emerging breaches are often identified only after a quarter-end compliance
-  certificate arrives.
-- Cross-default exposure across parent, subsidiary, and guaranteed debt
-  structures is hard to trace under stress.
+```
+                    ┌─────────────────────────────────────────────────────┐
+                    │           DDCSE v2 Surveillance Pipeline            │
+                    └─────────────────────────────────────────────────────┘
 
-The Dynamic Debt Covenant Surveillance Engine (DDCSE) is a modular prototype for
-turning credit agreement language, market financials, and corporate debt
-hierarchies into a safer automated monitoring workflow. It uses structured
-contract dictionaries, safe Python AST compilation, yfinance statement ingestion,
-and NetworkX graph cascades to detect compliance status, buffer erosion, and
-technical cross-default propagation.
-
-## Architecture
-
-DDCSE is organized as a four-stage covenant surveillance pipeline:
-
-```text
-Ingestion -> Safe AST Compilation -> Live Market Pipeline -> NetworkX Cascades
+ ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐
+ │  1. Ingestion│───▶│ 2. AST-Safe  │───▶│ 3. Analytics │───▶│ 4. Output Layer  │
+ │              │    │   Compiler   │    │   Engine     │    │                  │
+ │ real_cases   │    │ compiler.py  │    │ analytics_v2 │    │ Streamlit UI     │
+ │ .py (3 live  │    │              │    │              │    │ Audit JSON       │
+ │  case files) │    │ No eval()    │    │ NetworkX     │    │ PPTX mini-deck   │
+ │ yfinance     │    │ TypedDict    │    │ Shock Matrix │    │ PDF report       │
+ │ live pull    │    │ contracts    │    │ Trend detect │    │                  │
+ └──────────────┘    └──────────────┘    └──────────────┘    └──────────────────┘
 ```
 
-```mermaid
-flowchart LR
-    A["Credit Agreement Text"] --> B["Structured Ingestion"]
-    B --> C["Safe AST Compiler"]
-    C --> D["Compliance Function"]
-    E["yfinance Quarterly Statements"] --> F["FinancialDataPipeline"]
-    F --> D
-    D --> G["Variance Warning Engine"]
-    D --> H["NetworkX Cross-Default Graph"]
-    H --> I["Cascade Impact Map"]
-    G --> J["Streamlit Dashboard + Audit JSON"]
-    I --> J
+### 1. Real-Case Ingestion (`real_cases.py`)
+
+Structured `TypedDict`-typed records for each borrower, capturing:
+
+- Full covenant package (leverage, coverage, FCCR, liquidity tests)
+- Debt stack (tranche-level: face value, seniority, rate, lender, cross-default clause)
+- LTM financial inputs (EBITDA, total debt, cash, interest expense, capex)
+- Historical quarterly ratio trend (NLR + ICR across 8 periods)
+- Case narrative (filing context, breach catalyst, restructuring outcome)
+
+Source lineage is embedded at the field level (`source: "10-K FY2022 Note 9"`).
+
+### 2. AST-Safe Covenant Compiler (`compiler.py`)
+
+Converts structured `CovenantRuleConfig` dictionaries into typed Python callables using Abstract Syntax Tree generation. **Zero use of `eval()` or `exec()`.**
+
+Why this matters:
+- Covenant text extracted from PDFs or OCR is an injection surface
+- AST constrains permitted operations to explicit arithmetic nodes
+- Generated functions are deterministic, testable, and model-risk reviewable
+
+### 3. Analytics Engine (`analytics_v2.py` — new in v2)
+
+**Covenant Evaluator:**
+- Multi-covenant package runner (leverage + coverage + FCCR + liquidity)
+- Buffer severity scoring (0–100 continuous) for portfolio heat maps
+- Status classification: `COMPLIANT` → `WATCHLIST` → `WARNING` → `BREACH`
+
+**NetworkX Cross-Default Cascade:**
+- Directed graph of debt entities (HoldCo, OpCo, subsidiaries)
+- BFS propagation from initial breach entity
+- Tracks: propagation path, entities triggered, total debt at risk, cascade depth
+- Pre-built Envision Healthcare graph (`build_envision_graph()`) as reference case
+
+**Macro Shock Matrix:**
+- EBITDA compression × debt increase sensitivity grid
+- Each cell: stressed NLR, breach flag, buffer distance
+- Configurable shock vectors for custom scenario analysis
+
+**Trend Erosion Detector:**
+- Directional velocity analysis (improving / stable / deteriorating)
+- Quarters-to-breach estimate under current trajectory
+- Works on historical NLR or ICR time series
+
+### 4. Output Layer (`app.py`, `audit.py`)
+
+**Streamlit Dashboard:**
+- Portfolio monitor with company selector (3 real cases)
+- Live ticker fetch via `yfinance.FinancialDataPipeline`
+- Covenant package status with buffer bars and severity badges
+- Historical ratio trend chart (dual-axis: NLR + ICR)
+- Macro stress test simulator (interactive EBITDA/debt sliders)
+- NetworkX cascade visualization (matplotlib node coloring by status)
+- JSON audit export per compliance run
+
+**Audit Record (per run):**
+```json
+{
+  "run_id": "DDCSE-2024-0331-001",
+  "timestamp_utc": "2024-03-31T06:00:07Z",
+  "engine_version": "2.0.0",
+  "compiler": "AST-safe (no eval)",
+  "ticker": "EVHC",
+  "covenant_type": "Net Leverage Ratio",
+  "threshold": 6.5,
+  "actual": 16.61,
+  "compliant": false,
+  "buffer_distance": -10.11,
+  "severity_score": 97.3,
+  "status": "BREACH",
+  "source_payload": { "filing": "10-K FY2022", "note": "Note 9" }
+}
 ```
 
-### 1. Ingestion
-
-File: `ingestion.py`
-
-The ingestion layer converts mock Article VI credit agreement text chunks into a
-structured covenant dictionary. Each covenant is isolated into four linguistic
-components:
-
-- `relation`: legal phrase such as `not to exceed`
-- `operator`: normalized comparison such as `less_than_or_equal`
-- `governors`: financial covenant concept such as `Consolidated Net Leverage Ratio`
-- `objects`: numerical threshold such as `3.50`
-
-This keeps legal parsing output declarative and auditable before any executable
-logic is created.
-
-### 2. Safe AST Compilation
-
-File: `compiler.py`
-
-The compiler maps structured covenant dictionaries into a formal Python Abstract
-Syntax Tree. It returns a type-checked callable that accepts:
-
-- `total_debt`
-- `cash`
-- `ebitda`
-
-The compiled function calculates Net Leverage Ratio, returns a boolean
-compliance flag, and returns the exact buffer distance to breach.
-
-This approach intentionally avoids raw `eval()`. Raw string evaluation is unsafe
-because contract text and extracted rules can become injection vectors. AST
-generation keeps the allowed operations constrained, reviewable, and testable.
-
-### 3. Live Market Pipeline via yfinance
-
-File: `data_fetcher.py`
-
-`FinancialDataPipeline.fetch_live_metrics(ticker: str)` connects to
-`yfinance.Ticker` and downloads the latest quarterly balance sheet and income
-statement. It standardizes:
-
-- `total_debt`: explicit total debt when available, otherwise current debt plus
-  long-term debt
-- `cash`: cash and cash equivalents fallback aliases
-- `ebitda`: explicit EBITDA when available, otherwise operating income plus
-  depreciation and amortization
-
-The payload includes lineage, reporting period, currency, net debt, and
-structured error messages when API or statement fields are missing. It also
-supports explicit unit normalization to raw units, thousands, millions, or
-billions.
-
-### 4. NetworkX Cross-Default Graph Cascades
-
-File: `analytics.py`
-
-The analytics layer models corporate debt structure as a directed NetworkX graph:
-
-- `HoldCo`
-- `OpCo_A`
-- `OpCo_B`
-- `MinorSub_1`
-- `MinorSub_2`
-
-When a facility breaches, `simulate_macro_shock` recursively traverses related
-parents and subsidiaries to flag technical cross-defaults. The same module also
-tracks covenant buffer proximity and flags warnings when a covenant is within
-10% of its breach threshold.
-
-```mermaid
-graph TD
-    HoldCo["HoldCo Revolver"] --> OpCoA["OpCo_A Term Loan A"]
-    HoldCo --> OpCoB["OpCo_B Term Loan B"]
-    OpCoA --> MinorSub1["MinorSub_1 ABL Facility"]
-    OpCoB --> MinorSub2["MinorSub_2 Equipment Notes"]
-    MinorSub1 -. "Primary breach" .-> HoldCo
-    HoldCo -. "Technical cross-default" .-> OpCoB
-```
-
-## Streamlit Interface
-
-File: `app.py`
-
-The Streamlit UI provides:
-
-- Live ticker fetch through `FinancialDataPipeline`
-- Unit normalization controls for financial statement scale
-- Covenant type selection across leverage, coverage, fixed charge, and liquidity tests
-- Sidebar inputs for Total Debt, Cash, and EBITDA
-- Metric cards for Net Leverage Ratio, covenant status, and buffer cushion
-- Yellow warning when remaining buffer is within 10% of the threshold
-- Red breach state when the facility is non-compliant
-- Matplotlib rendering of the NetworkX debt hierarchy with dynamic node colors
-- Cross-default propagation path inspection
-- Downloadable JSON audit record for each compliance run
-
-## Visual Output
-
-### Covenant Warning State
-
-![Covenant warning state](docs/screenshots/covenant_warning.png)
-
-### Cross-Default Cascade
-
-![Cross-default cascade](docs/screenshots/cross_default_graph.png)
-
-## Sample Covenant Result
-
-| Metric | Value |
-|---|---:|
-| Net Leverage Ratio | 3.40x |
-| Threshold | 3.50x |
-| Buffer Cushion | 0.10x |
-| Warning Band | 0.35x |
-| Status | Compliant, Watchlist |
-
-Sample audit output is available at
-[`docs/sample_audit_record.json`](docs/sample_audit_record.json).
+---
 
 ## Repository Layout
 
-```text
+```
 .
-|-- docs/
-|   |-- architecture.md
-|   |-- diagrams/
-|   |-- sample_audit_record.json
-|   `-- screenshots/
-|-- analytics.py
-|-- app.py
-|-- audit.py
-|-- compiler.py
-|-- contracts.py
-|-- data_fetcher.py
-|-- ingestion.py
-|-- requirements.txt
-|-- test_data_fetcher.py
-|-- test_suite.py
-`-- README.md
+├── real_cases.py           ← Real case data registry (Envision / Revlon / Cineworld)
+├── analytics_v2.py         ← Enhanced analytics engine (NEW in v2)
+├── contracts.py            ← Shared TypedDict contracts
+├── compiler.py             ← AST-safe covenant compiler
+├── ingestion.py            ← Credit agreement ingestion layer
+├── data_fetcher.py         ← yfinance live financial pipeline
+├── audit.py                ← JSON audit record serializer
+├── app.py                  ← Streamlit monitoring dashboard
+├── requirements.txt
+├── test_suite.py
+├── test_data_fetcher.py
+└── docs/
+    ├── real_cases/
+    │   ├── envision_case_notes.md
+    │   ├── revlon_case_notes.md
+    │   └── cineworld_case_notes.md
+    ├── architecture.md
+    ├── sample_audit_record.json
+    ├── screenshots/
+    └── deck/
+        ├── DDCSE_Private_Credit_Surveillance_Mini_Deck.pptx
+        └── ib_output.md
 ```
 
-## Setup
+---
 
-Use the local Python environment that has `networkx`, `pandas`, `yfinance`,
-`matplotlib`, and `streamlit` installed.
-
-On this workstation, the verified runtime is:
-
-```powershell
-& 'C:\Users\Anklesh\anaconda3\python.exe' --version
-```
-
-If dependencies are missing in another environment:
-
-```powershell
-pip install networkx pandas yfinance matplotlib streamlit
-```
-
-## Run Tests
-
-```powershell
-& 'C:\Users\Anklesh\anaconda3\python.exe' -m unittest -v test_suite.py test_data_fetcher.py
-```
-
-The tests cover:
-
-- Zero and negative EBITDA handling
-- Massive debt spike breach behavior
-- 10% buffer warning logic
-- No raw `eval()` usage
-- Net leverage, interest coverage, fixed charge coverage, and liquidity templates
-- Debt aggregation from current and long-term debt
-- EBITDA fallback calculation
-- Financial statement unit normalization
-- yfinance disconnect handling
-- JSON audit serialization
-
-## Run the Streamlit App
-
-```powershell
-& 'C:\Users\Anklesh\anaconda3\python.exe' -m streamlit run app.py --server.port 8501
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8501
-```
-
-## CI/CD Boundary
-
-The repository includes a GitHub Actions workflow at `.github/workflows/ci.yml`.
-It installs the pinned dependencies from `requirements.txt` and runs:
+## Quick Start
 
 ```bash
-python -m unittest -v test_suite.py test_data_fetcher.py
+# Install dependencies
+pip install networkx pandas yfinance matplotlib streamlit
+
+# Run the Streamlit dashboard
+python -m streamlit run app.py --server.port 8501
+
+# Run covenant evaluation on a real case
+python3 -c "
+from real_cases import get_case
+from analytics_v2 import evaluate_package, portfolio_severity_score
+
+case = get_case('EVHC')   # Envision Healthcare
+results = evaluate_package(case['covenants'])
+for r in results:
+    print(f'{r.name}: {r.actual:.2f} vs {r.threshold:.2f} [{r.status}] severity={r.severity_score}')
+print(f'Portfolio severity: {portfolio_severity_score(results):.1f}/100')
+"
+
+# Run cross-default cascade
+python3 -c "
+from analytics_v2 import build_envision_graph, simulate_cascade
+G = build_envision_graph()
+result = simulate_cascade(G, breach_entity_id='sub1_abl')
+print(f'Cascade from Sub 1 ABL:')
+print(f'  Path: {\" → \".join(result.propagation_path)}')
+print(f'  Total debt at risk: \${result.total_debt_at_risk_usd_m:,.0f}M')
+print(f'  Technical cross-defaults: {result.technical_cross_defaults}')
+"
 ```
 
-This keeps the test-driven generation boundary enforceable on pushes and pull
-requests.
+---
 
-## Audit Export
+## Why This Matters in Private Credit
 
-Each UI compliance run can be exported as JSON. The audit payload records:
+The conventional covenant monitoring workflow looks like this:
 
-- ticker
-- covenant type
-- UTC timestamp
-- normalized inputs
-- calculated ratio
-- threshold
-- compliance status
-- buffer distance
-- warning band
-- source payload and data lineage
+> PDF credit agreement → email to analyst → Excel tickler → quarterly cert → missed breach
 
-This creates a reviewable artifact for credit, portfolio monitoring, model risk,
-and internal audit workflows.
+DDCSE replaces that with:
 
-## Why AST Instead of eval()
+1. **Structured ingestion** — covenant language → typed fields with source lineage
+2. **AST compilation** — typed fields → deterministic, injectable compliance functions
+3. **Live financial inputs** — yfinance quarterly statements → normalized financial payload
+4. **Cascade impact** — any breach → propagation map showing total debt affected
+5. **Audit trail** — every run produces a JSON record for credit, MRM, and internal audit
 
-Traditional covenant automation often fails at one of two extremes: either the
-workflow remains manual and slow, or extracted legal text is converted into
-dangerous executable strings. DDCSE uses a safer middle path.
+The result is faster breach detection, safer automation, and a reviewable artifact for regulators and internal audit.
 
-Raw `eval()` parsing is dangerous because it executes arbitrary code if the
-input is malformed, manipulated, or incorrectly sanitized. In a covenant
-monitoring system, inputs may originate from PDFs, OCR, external borrower data,
-or analyst-maintained templates. Those are not safe execution contexts.
+---
 
-An AST-driven compiler is superior because:
+## Design Decisions
 
-- The permitted mathematical operations are explicit.
-- The compiler validates operators, governors, and thresholds before execution.
-- The generated function is deterministic and testable.
-- The rule dictionary remains auditable by legal, credit, and model risk teams.
-- The approach scales across covenant types without opening an injection path.
+### AST vs `eval()`
 
-## Why This Matters Operationally
+Credit agreement text arrives as PDFs, OCR output, or analyst-maintained templates. These are unsafe execution contexts. Raw `eval()` executes arbitrary code if the input is malformed or manipulated. DDCSE's AST compiler constrains allowed operations to explicit arithmetic nodes — the compiler validates operators, governors, and thresholds before execution, and the generated function is testable and model-risk reviewable.
 
-In a manual compliance workflow, analysts often spend time finding the right
-document, extracting the right covenant, locating the right financial statement
-fields, recalculating ratios, and then tracing whether a breach matters across
-guarantees and related facilities. That is expensive, slow, and vulnerable to
-key-person knowledge gaps.
+### Real Case Data vs. Synthetic
 
-DDCSE compresses that workflow into a controlled pipeline:
+V2 uses real Ch.11 cases because:
+- Ratio trajectories are non-linear (Cineworld NLR: 2.9x → 22.4x → 12.1x → 13.8x)
+- Cross-default chain behavior is specific to actual guarantee structures
+- The Citibank/Revlon case demonstrates how cross-default clauses interact with payment errors
+- Real source lineage makes this usable as a work sample for credit/PE interviews
 
-1. Parse covenant language into structured fields.
-2. Compile the covenant safely into deterministic math.
-3. Pull live financial statement inputs into a standardized payload.
-4. Surface compliance, buffer erosion, and cross-default impact in one view.
+---
 
-The result is a faster, safer, and more auditable covenant surveillance pattern
-for private credit and corporate banking portfolios.
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).
+
+---
+
+*Built by Anklesh Rawat (DogInfantry) — Finance & Data Engineering portfolio.*
+*Sources: SEC EDGAR, SDNY/SDTX PACER, Bloomberg Terminal (FY2022 data), company IR.*

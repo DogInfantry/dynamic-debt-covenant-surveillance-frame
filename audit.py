@@ -30,6 +30,8 @@ def build_audit_record(
     buffer_distance: float,
     warning_band: float,
     source_payload: FinancialPayload | dict[str, Any],
+    severity_score: float = 0.0,
+    case_name: str | None = None,
 ) -> AuditRecord:
     """Build a serializable audit record for one compliance decision."""
 
@@ -45,6 +47,8 @@ def build_audit_record(
         "compliant": compliant,
         "buffer_distance": _json_safe_float(buffer_distance),
         "warning_band": warning_band,
+        "severity_score": round(severity_score, 1),
+        "case_name": case_name,
         "source_payload": dict(source_payload),
     }
 
