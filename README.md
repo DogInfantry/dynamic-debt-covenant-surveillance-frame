@@ -10,6 +10,15 @@
 
 ![DDCSE dashboard preview](docs/screenshots/streamlit_dashboard.png)
 
+## Finance / IB-Style Output
+
+For a more polished stakeholder view, see the consultant-style mini-deck:
+
+- [DDCSE Private Credit Surveillance Mini-Deck](docs/deck/DDCSE_Private_Credit_Surveillance_Mini_Deck.pptx)
+- [Banker-style output memo](docs/deck/ib_output.md)
+
+![DDCSE mini-deck contact sheet](docs/deck/DDCSE_mini_deck_contact_sheet.png)
+
 ## Executive Summary
 
 Private Credit and Corporate Banking teams monitor covenant packages across
