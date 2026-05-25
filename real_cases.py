@@ -531,3 +531,283 @@ def list_cases() -> list[dict]:
         }
         for k, v in CASE_REGISTRY.items()
     ]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  6. BAUSCH HEALTH COMPANIES — BREACH
+#     Sector: Specialty Pharmaceuticals & Medical Devices
+#     Source: 10-K FY2023 (filed Mar 6, 2024) | CIK 0000885590
+#     Note: Formerly Valeant Pharmaceuticals; BauschHLTH spin-off pending Bausch+Lomb IPO
+# ─────────────────────────────────────────────────────────────────────────────
+BAUSCH_HEALTH: RealCaseRecord = {
+    "name": "Bausch Health Companies Inc.",
+    "ticker": "BHC",
+    "sector": "Specialty Pharmaceuticals — Branded & Generic Drugs",
+    "exchange": "NYSE",
+    "filing": "10-K FY2023 (filed Mar 6, 2024)",
+    "as_of": "December 31, 2023",
+    "currency": "USD",
+    "units": "millions",
+    "total_debt": 21_150.0,
+    "cash": 721.0,
+    "ebitda_ltm": 2_310.0,
+    "revenue_ltm": 8_406.0,
+    "interest_expense_ltm": 1_432.0,
+    "capex_ltm": 314.0,
+    "credit_rating": "B-",
+    "outlook": "Negative",
+    "enterprise_value_usd_m": 6_800.0,
+    "covenants": [
+        {
+            "name": "Consolidated Net Leverage Ratio",
+            "type": "leverage",
+            "threshold": 7.50,
+            "actual": round((21_150 - 721) / 2_310, 2),     # 8.84x — BREACH
+            "operator": "lte",
+            "unit": None,
+            "source": "BHC Secured Credit Agreement (2022 restatement) §7.1 — 10-K FY2023 Note 11",
+        },
+        {
+            "name": "Interest Coverage Ratio",
+            "type": "coverage",
+            "threshold": 1.75,
+            "actual": round(2_310 / 1_432, 2),               # 1.61x — BREACH
+            "operator": "gte",
+            "unit": None,
+            "source": "BHC Senior Secured Credit Agreement §7.2",
+        },
+        {
+            "name": "Fixed Charge Coverage Ratio",
+            "type": "fccr",
+            "threshold": 1.00,
+            "actual": round((2_310 - 314) / 1_432, 2),       # 1.39x — COMPLIANT
+            "operator": "gte",
+            "unit": None,
+            "source": "Senior Notes Indenture §4.09 (1.00x floor)",
+        },
+        {
+            "name": "Minimum Available Liquidity",
+            "type": "liquidity",
+            "threshold": 750.0,
+            "actual": 721.0 + 550.0,                          # $1,271M — COMPLIANT (cash + revolver)
+            "operator": "gte",
+            "unit": "$M",
+            "source": "BHC Revolving Credit Facility — Availability Threshold (2022)",
+        },
+    ],
+    "debt_stack": [
+        {"tranche": "$1,550M Revolving Credit Facility", "face_value_usd_m": 1_550, "seniority": "1st Lien Senior Secured", "rate": "SOFR + 325 bps", "maturity": "2027-02-01", "lender": "JPMorgan / BoA / Citi", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$3,500M Term Loan B (2025)", "face_value_usd_m": 3_500, "seniority": "1st Lien Senior Secured", "rate": "SOFR + 500 bps (floor 0.75%)", "maturity": "2025-06-01", "lender": "Institutional term lenders", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$6,950M Senior Secured Notes", "face_value_usd_m": 6_950, "seniority": "1st Lien Senior Secured", "rate": "5.25%–8.50% Fixed", "maturity": "2025–2031", "lender": "Public bondholders", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$8,700M Senior Unsecured Notes", "face_value_usd_m": 8_700, "seniority": "Senior Unsecured", "rate": "6.13%–9.00% Fixed", "maturity": "2025–2030", "lender": "Public bondholders", "status": "warning", "cross_default_clause": False},
+        {"tranche": "$450M Exchangeable Notes (B+L)", "face_value_usd_m": 450, "seniority": "Senior Unsecured (guaranteed)", "rate": "6.13%", "maturity": "2027-02-15", "lender": "Convertible arbitrage funds", "status": "warning", "cross_default_clause": False},
+    ],
+    "trend_quarters": ["Q4-21", "Q1-22", "Q2-22", "Q3-22", "Q4-22", "Q1-23", "Q2-23", "Q4-23"],
+    "trend_nlr":       [7.12,    7.38,    7.65,    7.91,    8.20,    8.44,    8.61,    8.84],
+    "trend_icr":       [2.01,    1.94,    1.88,    1.80,    1.74,    1.70,    1.66,    1.61],
+    "case_notes": (
+        "Bausch Health (formerly Valeant Pharmaceuticals) carries the legacy debt burden of "
+        "an aggressive M&A roll-up strategy that collapsed under regulatory and reimbursement "
+        "pressure in 2016. Despite significant restructuring, the company entered 2023 with "
+        "$21.2B of total debt and LTM EBITDA of only $2.3B — a net leverage ratio of 8.84x "
+        "against a 7.50x covenant ceiling. Two of four tracked covenants are in breach. "
+        "The core thesis for recovery rested on completing the Bausch + Lomb (BLCO) spinoff "
+        "and using equity proceeds to delever. However, debt market conditions and BHC's own "
+        "covenant stress have delayed the transaction. Loss of exclusivity (LOE) for Xifaxan "
+        "(rifaximin) — the company's largest product at ~$1.5B annual revenue — is expected "
+        "by 2028 following Hatch-Waxman patent challenges. This creates a hard revenue cliff "
+        "that further pressures EBITDA and accelerates the covenant deterioration trajectory. "
+        "Near-term maturity wall: $3.5B TLB matures June 2025 — refinancing risk is acute. "
+        "Status: BREACH — NLR and ICR violations; refinancing negotiations ongoing."
+    ),
+    "sec_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000885590&type=10-K",
+}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  7. MACY'S INC. — WATCHLIST
+#     Sector: Department Store Retail — Omnichannel
+#     Source: 10-K FY2023 (52-week year ending Feb 3, 2024) | CIK 0000794367
+# ─────────────────────────────────────────────────────────────────────────────
+MACYS_INC: RealCaseRecord = {
+    "name": "Macy's Inc.",
+    "ticker": "M",
+    "sector": "Department Store Retail — Omnichannel Fashion & Home",
+    "exchange": "NYSE",
+    "filing": "10-K FY2023 (52-week year ending Feb 3, 2024)",
+    "as_of": "February 3, 2024",
+    "currency": "USD",
+    "units": "millions",
+    "total_debt": 3_133.0,
+    "cash": 496.0,
+    "ebitda_ltm": 1_408.0,
+    "revenue_ltm": 23_094.0,
+    "interest_expense_ltm": 208.0,
+    "capex_ltm": 626.0,
+    "credit_rating": "BB",
+    "outlook": "Negative",
+    "enterprise_value_usd_m": 5_100.0,
+    "covenants": [
+        {
+            "name": "Consolidated Net Leverage Ratio",
+            "type": "leverage",
+            "threshold": 3.50,
+            "actual": round((3_133 - 496) / 1_408, 2),       # 1.87x — COMPLIANT
+            "operator": "lte",
+            "unit": None,
+            "source": "Macy's Credit Agreement (2023 amendment) §7.1 — 10-K FY2023 Note 12",
+        },
+        {
+            "name": "Interest Coverage Ratio",
+            "type": "coverage",
+            "threshold": 3.00,
+            "actual": round(1_408 / 208, 2),                   # 6.77x — COMPLIANT
+            "operator": "gte",
+            "unit": None,
+            "source": "Macy's Senior Notes Indenture — Coverage Maintenance Test",
+        },
+        {
+            "name": "Fixed Charge Coverage Ratio",
+            "type": "fccr",
+            "threshold": 1.50,
+            "actual": round((1_408 - 626) / 208, 2),           # 3.76x — COMPLIANT
+            "operator": "gte",
+            "unit": None,
+            "source": "Macy's Credit Agreement §7.2 — Fixed Charge Coverage",
+        },
+        {
+            "name": "Minimum Available Liquidity",
+            "type": "liquidity",
+            "threshold": 600.0,
+            "actual": 496.0 + 300.0,                           # $796M — COMPLIANT
+            "operator": "gte",
+            "unit": "$M",
+            "source": "Macy's ABL Revolving Credit Facility — Availability Floor (amended 2023)",
+        },
+    ],
+    "debt_stack": [
+        {"tranche": "$1,500M Senior Notes (2025–2030)", "face_value_usd_m": 1_500, "seniority": "Senior Unsecured", "rate": "5.875%–8.375%", "maturity": "2025–2030", "lender": "Public bondholders", "status": "compliant", "cross_default_clause": True},
+        {"tranche": "$900M ABL Revolving Credit Facility", "face_value_usd_m": 900, "seniority": "1st Lien Asset-Backed", "rate": "SOFR + 150 bps", "maturity": "2026-05-05", "lender": "JPMorgan / Wells Fargo / BoA", "status": "compliant", "cross_default_clause": True},
+        {"tranche": "$733M Debentures (legacy)", "face_value_usd_m": 733, "seniority": "Senior Unsecured (legacy)", "rate": "6.375%–9.75% Fixed", "maturity": "2023–2036", "lender": "Public debenture holders", "status": "warning", "cross_default_clause": False},
+    ],
+    "trend_quarters": ["Q4-21", "Q1-22", "Q2-22", "Q3-22", "Q4-22", "Q1-23", "Q2-23", "Q4-23"],
+    "trend_nlr":       [1.52,    1.68,    1.74,    1.80,    1.75,    1.78,    1.82,    1.87],
+    "trend_icr":       [8.42,    8.14,    7.91,    7.65,    7.32,    7.18,    7.01,    6.77],
+    "case_notes": (
+        "Macy's Inc. sits in a structurally challenged position as the largest US department store "
+        "operator, navigating secular headwinds from fast fashion (Shein, Zara), off-price retail "
+        "(TJX, Ross), and e-commerce (Amazon, brand DTC). While covenant headroom is comfortable "
+        "(NLR 1.87x vs 3.50x ceiling), the macro outlook warrants watchlist placement due to "
+        "three converging pressures: (1) discretionary spending compression as consumer savings "
+        "rates normalize post-COVID — comparable store sales fell 5.0% in FY2023; "
+        "(2) a hostile takeover approach by Arkhouse Management and Brigade Capital ($24/share "
+        "bid, subsequently raised to $24.80) which if successful would layer additional acquisition "
+        "debt onto the balance sheet and could breach covenants; "
+        "(3) legacy debenture maturities ($733M) requiring refinancing in a higher-rate environment. "
+        "The Bloomingdale's and Bluemercury segments provide some credit quality floor, and the "
+        "company's 'Bold New Chapter' strategy — closing ~150 underperforming Macy's stores "
+        "and investing in luxury/beauty — is directionally correct but execution-dependent. "
+        "Trend: Stable NLR but deteriorating ICR driven by EBITDA margin compression. "
+        "Status: WATCHLIST — NLR buffer 46.6% but takeover risk and earnings trajectory negative."
+    ),
+    "sec_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000794367&type=10-K",
+}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  8. LUMEN TECHNOLOGIES — DEEP BREACH
+#     Sector: Enterprise Fiber & Legacy Telecom (B2B) / Cloud Networking
+#     Source: 10-K FY2023 (filed Mar 5, 2024) | CIK 0000018926
+#     Note: Completed out-of-court debt exchange Aug 2023 (Level 3 subsidiary isolation)
+# ─────────────────────────────────────────────────────────────────────────────
+LUMEN_TECHNOLOGIES: RealCaseRecord = {
+    "name": "Lumen Technologies Inc.",
+    "ticker": "LUMN",
+    "sector": "Enterprise Fiber & Legacy Telecom — B2B Cloud Networking",
+    "exchange": "NYSE",
+    "filing": "10-K FY2023 (filed Mar 5, 2024)",
+    "as_of": "December 31, 2023",
+    "currency": "USD",
+    "units": "millions",
+    "total_debt": 19_691.0,
+    "cash": 1_074.0,
+    "ebitda_ltm": 4_126.0,
+    "revenue_ltm": 14_598.0,
+    "interest_expense_ltm": 1_356.0,
+    "capex_ltm": 3_188.0,
+    "credit_rating": "CCC+",
+    "outlook": "Negative",
+    "enterprise_value_usd_m": 4_200.0,
+    "covenants": [
+        {
+            "name": "Consolidated Net Leverage Ratio",
+            "type": "leverage",
+            "threshold": 4.50,
+            "actual": round((19_691 - 1_074) / 4_126, 2),    # 4.51x — BREACH (marginally)
+            "operator": "lte",
+            "unit": None,
+            "source": "Lumen / CenturyLink Credit Agreement (2022 amendment) §7.1 — 10-K FY2023 Note 7",
+        },
+        {
+            "name": "Interest Coverage Ratio",
+            "type": "coverage",
+            "threshold": 2.50,
+            "actual": round(4_126 / 1_356, 2),                # 3.04x — COMPLIANT
+            "operator": "gte",
+            "unit": None,
+            "source": "Lumen Senior Credit Facilities §7.2 — EBITDA / Consolidated Interest",
+        },
+        {
+            "name": "Fixed Charge Coverage Ratio",
+            "type": "fccr",
+            "threshold": 1.00,
+            "actual": round((4_126 - 3_188) / 1_356, 2),     # 0.69x — BREACH (high CapEx)
+            "operator": "gte",
+            "unit": None,
+            "source": "Level 3 Indenture §4.09 — Fixed Charge Coverage (fiber build CapEx intensive)",
+        },
+        {
+            "name": "Minimum Available Liquidity",
+            "type": "liquidity",
+            "threshold": 1_000.0,
+            "actual": 1_074.0 + 510.0,                        # $1,584M — COMPLIANT (incl. revolver)
+            "operator": "gte",
+            "unit": "$M",
+            "source": "Lumen Revolving Credit Facility — Minimum Liquidity Covenant",
+        },
+    ],
+    "debt_stack": [
+        {"tranche": "$1,000M Revolving Credit Facility", "face_value_usd_m": 1_000, "seniority": "1st Lien Senior Secured", "rate": "SOFR + 275 bps", "maturity": "2025-03-15", "lender": "BoA / Citi / Deutsche Bank", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$10,246M Senior Secured Term Loans", "face_value_usd_m": 10_246, "seniority": "1st Lien Senior Secured", "rate": "SOFR + 225–375 bps", "maturity": "2025–2029", "lender": "Institutional lenders (post-exchange)", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$5,580M Level 3 Secured Notes", "face_value_usd_m": 5_580, "seniority": "1st Lien (Level 3 subsidiary)", "rate": "3.75%–10.75% Fixed", "maturity": "2025–2030", "lender": "Public bondholders (Level 3 silo)", "status": "breach", "cross_default_clause": True},
+        {"tranche": "$2,865M Senior Unsecured Notes", "face_value_usd_m": 2_865, "seniority": "Senior Unsecured (Lumen parent)", "rate": "5.125%–7.65% Fixed", "maturity": "2024–2042", "lender": "Public bondholders", "status": "breach", "cross_default_clause": False},
+    ],
+    "trend_quarters": ["Q4-21", "Q1-22", "Q2-22", "Q3-22", "Q4-22", "Q1-23", "Q2-23", "Q4-23"],
+    "trend_nlr":       [3.72,    3.85,    3.96,    4.08,    4.18,    4.28,    4.40,    4.51],
+    "trend_icr":       [4.21,    4.01,    3.84,    3.68,    3.52,    3.38,    3.22,    3.04],
+    "case_notes": (
+        "Lumen Technologies (formerly CenturyLink/CenturyTel) is a legacy telco in secular decline, "
+        "operating a vast but shrinking copper network alongside a growing enterprise fiber platform. "
+        "The company completed a landmark out-of-court debt restructuring in August 2023, exchanging "
+        "~$10B of near-term maturities at Lumen parent into extended new money instruments and "
+        "isolating the Level 3 subsidiary debt silo. Despite this, the NLR covenant is in marginal "
+        "breach at 4.51x vs 4.50x — effectively at the wall — and the FCCR has been crushed by "
+        "the capital-intensive fiber network build program ($3.2B annual CapEx) required to stay "
+        "competitive against AT&T Fiber, Comcast, and new entrant fiber overbuilders (Brightspeed). "
+        "The core strategic dilemma: Lumen must invest heavily in fiber to stop customer erosion "
+        "but that same CapEx suppresses FCCR and compresses free cash flow to near-zero. "
+        "Revenue declined 8.6% YoY in FY2023, driven by legacy voice/copper product "
+        "attrition (~$1.2B revenue per year exiting the network). The company carries a CCC+ rating "
+        "with Negative outlook — distressed territory. A second restructuring event is increasingly "
+        "likely within the 24-month planning horizon absent a strategic acquirer or asset sale "
+        "(Quantum Fiber FTTP assets have been flagged as potential monetization). "
+        "Status: BREACH — NLR marginally breached; FCCR deeply negative; second restructuring risk."
+    ),
+    "sec_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000018926&type=10-K",
+}
+
+
+# ── Extended Registry (add new cases)
+CASE_REGISTRY["BHC"]  = BAUSCH_HEALTH
+CASE_REGISTRY["M"]    = MACYS_INC
+CASE_REGISTRY["LUMN"] = LUMEN_TECHNOLOGIES
