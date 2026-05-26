@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDCSE v3.0 — Debt Covenant Surveillance Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; background: #F0F3F8; color: #2C3E50; }
+  a { color: #1A3A5C; }
+  @media print {
+    body { background: #fff; }
+    .no-print { display: none; }
+    .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER BANNER -->
+<div style="background:linear-gradient(135deg,#0A1628 0%,#1A3A5C 60%,#2C5282 100%);padding:40px 48px 32px;">
+  <div style="color:#B0C4DE;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+    Private Credit · Covenant Surveillance · v3.0
+  </div>
+  <h1 style="color:#fff;font-size:32px;font-weight:900;letter-spacing:-0.5px;margin-bottom:6px;">
+    Dynamic Debt Covenant Surveillance Engine
+  </h1>
+  <div style="color:#7FAFD4;font-size:14px;margin-bottom:24px;">
+    8 Credits &nbsp;·&nbsp; 6 Industry Sectors &nbsp;·&nbsp; SEC EDGAR Sourced &nbsp;·&nbsp; May 26, 2026
+  </div>
+  <!-- KPI strip -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;">
+    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">8</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Credits</div>
+    </div><div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">4</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Breaches</div>
+    </div><div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">1</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Watchlist</div>
+    </div><div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">3</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Compliant</div>
+    </div><div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">$259B</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Total Debt</div>
+    </div><div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:8px;padding:14px 22px;min-width:130px;text-align:center;">
+      <div style="color:#fff;font-size:26px;font-weight:900;">6</div>
+      <div style="color:#7FAFD4;font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Sectors</div>
+    </div>
+  </div>
+  <div style="margin-top:18px;padding:10px 16px;background:rgba(200,219,255,0.12);
+    border-left:3px solid #4A90D9;border-radius:0 6px 6px 0;">
+    <span style="color:#C8DBFF;font-size:11px;font-weight:700;">v3.0 NEW SECTORS: </span>
+    <span style="color:#9BBDE0;font-size:11px;">
+      BHC (Bausch Health · Specialty Pharma · BREACH) &nbsp;·&nbsp;
+      M (Macy's · Dept Store Retail · WATCHLIST) &nbsp;·&nbsp;
+      LUMN (Lumen Technologies · Enterprise Fiber Telecom · BREACH)
+    </span>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div class="no-print" style="background:#1A3A5C;padding:0 48px;display:flex;gap:24px;overflow-x:auto;">
+  <a href="#company-CHTR" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">CHTR</a><a href="#company-WBA" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">WBA</a><a href="#company-PARA" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">PARA</a><a href="#company-HCA" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">HCA</a><a href="#company-ATUS" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">ATUS</a><a href="#company-BHC" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">BHC</a><a href="#company-M" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">M</a><a href="#company-LUMN" style="color:#B0C4DE;text-decoration:none;padding:12px 4px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block;">LUMN</a>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:32px 24px;">
+
+  <!-- PORTFOLIO OVERVIEW TABLE -->
+  <div style="margin-bottom:32px;">
+    <h2 style="font-size:16px;font-weight:800;color:#0A1628;margin-bottom:12px;
+      padding-bottom:6px;border-bottom:2px solid #1A3A5C;">
+      Portfolio Overview — 8 Credits
+    </h2>
+    <div style="overflow-x:auto;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+      <table style="width:100%;border-collapse:collapse;background:#fff;">
+        <thead>
+          <tr style="background:#0A1628;">
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Ticker</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Sector</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Rating</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">NLR</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Threshold</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Buffer</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Severity</th>
+            <th style="padding:10px 12px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr style="background:#fff;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">CHTR</td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Media & Cable</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">BB</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">4.58x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">5.00x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#1A7A4A;">+8.4%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:17%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">17/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#FDF3E7;color:#D4680A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #D4680A33;">WATCHLIST</span></td>
+        </tr>
+        <tr style="background:#F8FAFD;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">WBA</td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Healthcare Retail</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">BB</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">5.41x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">5.00x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#C0392B;font-weight:700;">▼8.2%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:63%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">63/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+        </tr>
+        <tr style="background:#fff;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">PARA</td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Media & Entertainment</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">BBB–</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">3.87x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">4.50x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#1A7A4A;">+14.0%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:11%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">11/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+        </tr>
+        <tr style="background:#F8FAFD;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">HCA</td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Healthcare</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">BB+</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">3.10x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">4.50x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#1A7A4A;">+31.1%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:6%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">6/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+        </tr>
+        <tr style="background:#fff;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">ATUS</td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Cable & Telecommunications</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">CCC+</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">8.96x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">7.00x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#C0392B;font-weight:700;">▼28.0%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:90%;height:8px;background:#C0392B;border-radius:4px;"></div></div><span style="font-size:10px;color:#C0392B;font-weight:700;">90/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+        </tr>
+        <tr style="background:#EEF4FF;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">BHC<span style="font-size:9px;background:#C8DBFF;color:#1A3A5C;padding:0 5px;border-radius:8px;margin-left:4px;">★NEW</span></td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Specialty Pharmaceuticals</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">B-</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">8.84x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">7.50x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#C0392B;font-weight:700;">▼17.9%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:58%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">58/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+        </tr>
+        <tr style="background:#EEF4FF;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">M<span style="font-size:9px;background:#C8DBFF;color:#1A3A5C;padding:0 5px;border-radius:8px;margin-left:4px;">★NEW</span></td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Department Store Retail</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">BB</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">1.87x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">3.50x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#1A7A4A;">+46.6%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:5%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">5/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+        </tr>
+        <tr style="background:#EEF4FF;">
+          <td style="padding:9px 12px;font-weight:800;font-size:13px;color:#0A1628;">LUMN<span style="font-size:9px;background:#C8DBFF;color:#1A3A5C;padding:0 5px;border-radius:8px;margin-left:4px;">★NEW</span></td>
+          <td style="padding:9px 12px;font-size:11px;color:#4A5568;">Enterprise Fiber & Legacy Telecom</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">CCC+</td>
+          <td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;">4.51x</td>
+          <td style="padding:9px 12px;text-align:center;font-size:11px;color:#8A9BB0;">4.50x</td>
+          <td style="padding:9px 12px;text-align:center;"><span style="color:#C0392B;font-weight:700;">▼0.2%</span></td>
+          <td style="padding:9px 12px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:68%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">68/100</span></td>
+          <td style="padding:9px 12px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- COMPANY DEEP DIVES -->
+  <h2 style="font-size:16px;font-weight:800;color:#0A1628;margin-bottom:16px;
+    padding-bottom:6px;border-bottom:2px solid #1A3A5C;">
+    Company Deep-Dive Profiles
+  </h2>
+  <div id="company-CHTR">({'ticker': 'CHTR', 'name': 'Charter Communications Inc.', 'sector': 'Media & Cable — Broadband / Cable TV', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 94921.0, 'nlr': 4.58, 'nlr_threshold': 5.0, 'icr': 4.88, 'credit_rating': 'BB', 'outlook': 'Stable'}, '')</div><div id="company-WBA">({'ticker': 'WBA', 'name': 'Walgreens Boots Alliance Inc.', 'sector': 'Healthcare Retail — Pharmacy / Drug Stores', 'as_of': 'August 31, 2023', 'total_debt_usd_m': 33164.0, 'nlr': 5.41, 'nlr_threshold': 5.0, 'icr': 5.18, 'credit_rating': 'BB', 'outlook': 'Negative'}, '')</div><div id="company-PARA">({'ticker': 'PARA', 'name': 'Paramount Global (formerly ViacomCBS)', 'sector': 'Media & Entertainment — Streaming / Broadcast', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 15597.0, 'nlr': 3.87, 'nlr_threshold': 4.5, 'icr': 4.27, 'credit_rating': 'BBB–', 'outlook': 'Negative Watch'}, '')</div><div id="company-HCA">({'ticker': 'HCA', 'name': 'HCA Healthcare Inc.', 'sector': 'Healthcare — Hospital Systems / Acute Care', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 39251.0, 'nlr': 3.1, 'nlr_threshold': 4.5, 'icr': 6.72, 'credit_rating': 'BB+', 'outlook': 'Positive'}, '')</div><div id="company-ATUS">({'ticker': 'ATUS', 'name': 'Altice USA Inc. (CSC Holdings)', 'sector': 'Cable & Telecommunications — Broadband / Pay-TV', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 32498.0, 'nlr': 8.96, 'nlr_threshold': 7.0, 'icr': 1.92, 'credit_rating': 'CCC+', 'outlook': 'Negative — Restructuring Risk'}, '')</div><div id="company-BHC">({'ticker': 'BHC', 'name': 'Bausch Health Companies Inc.', 'sector': 'Specialty Pharmaceuticals — Branded & Generic Drugs', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 21150.0, 'nlr': 8.84, 'nlr_threshold': 7.5, 'icr': 1.61, 'credit_rating': 'B-', 'outlook': 'Negative'}, '')</div><div id="company-M">({'ticker': 'M', 'name': "Macy's Inc.", 'sector': 'Department Store Retail — Omnichannel Fashion & Home', 'as_of': 'February 3, 2024', 'total_debt_usd_m': 3133.0, 'nlr': 1.87, 'nlr_threshold': 3.5, 'icr': 6.77, 'credit_rating': 'BB', 'outlook': 'Negative'}, '')</div><div id="company-LUMN">({'ticker': 'LUMN', 'name': 'Lumen Technologies Inc.', 'sector': 'Enterprise Fiber & Legacy Telecom — B2B Cloud Networking', 'as_of': 'December 31, 2023', 'total_debt_usd_m': 19691.0, 'nlr': 4.51, 'nlr_threshold': 4.5, 'icr': 3.04, 'credit_rating': 'CCC+', 'outlook': 'Negative'}, '')</div>
+  
+        <div id="company-CHTR" style="background:#fff;border-radius:10px;border-left:4px solid #D4680A;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">CHTR</span>
+              
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Charter Communications Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">BB / Stable</span>
+              <span style="background:#FDF3E7;color:#D4680A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #D4680A33;">WATCHLIST</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Media & Cable — Broadband / Cable TV &nbsp;·&nbsp; 10-K FY2023 (filed Feb 9, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$94.9B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$20,576M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.58x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">5.00x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.88x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">17/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:17%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">17/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">4.58x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 5.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:61%;height:8px;background:#D4680A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+8.4%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#FDF3E7;color:#D4680A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #D4680A33;">WATCHLIST</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">4.88x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:27%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+144.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">2.10x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.10x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:35%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+90.9%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$635M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $500M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:52%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+27.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Charter is the second-largest US cable operator ($54B revenue, 32M+ customer relationships). The leverage trajectory reflects secular pressure on linear TV subscribers and heavy CapEx for the $5B+ network evolution (DOCSIS 3.1 → DOCSIS 4.0 upgrade cycle). NLR has drifted from 4.1x (Q4-2021) to 4.6x (Q4-2023) — within covenant but with only 8.4% buffer to the 5.00x ceiling. Management targets 4.0–4.5x over the medium term. Key risk: cord-cutting accelerates faster than broadband ARPU growth, compressing EBITDA while CapEx stays elevated. Rating: BB / Stable (S&P), Ba2 / Stable (Moody's). Status: WATCHLIST.</div>
+          </div>
+        </div>
+        <div id="company-WBA" style="background:#fff;border-radius:10px;border-left:4px solid #C0392B;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">WBA</span>
+              
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Walgreens Boots Alliance Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">BB / Negative</span>
+              <span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Healthcare Retail — Pharmacy / Drug Stores &nbsp;·&nbsp; 10-K FY2023 (filed Oct 12, 2023) + Q2 FY2024 10-Q &nbsp;·&nbsp; As of August 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$33.2B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$5,988M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">5.41x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">5.00x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">5.18x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">63/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:63%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">63/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">5.41x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 5.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:72%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 8.2% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">5.18x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:26%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+159.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">2.16x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.10x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:34%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+96.4%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$766M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $1000M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:87%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 23.4% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">WBA was a Dow Jones component until 2020 and the world's largest pharmacy chain. The leverage explosion reflects four compounding stressors: (1) the $5.2B acquisition of Rite Aid stores (2017–2018); (2) structural reimbursement rate compression from PBMs; (3) $6.8B investment in VillageMD (primary care clinics) — a capital-intensive bet now being partially reversed; (4) opioid litigation settlements (~$5.7B, 2022–2023). NLR crossed the 5.00x covenant ceiling in Q1-2023. S&P downgraded to BB (junk) in March 2024. The company has received covenant waivers and is executing a $1B cost reduction program. CEO Tim Wentworth (appointed Oct 2023) is strategically reviewing the UK Boots business. Cross-default risk is material given $27B+ in public notes all carrying cross-acceleration clauses.</div>
+          </div>
+        </div>
+        <div id="company-PARA" style="background:#fff;border-radius:10px;border-left:4px solid #1A7A4A;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">PARA</span>
+              
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Paramount Global (formerly ViacomCBS)</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">BBB– / Negative Watch</span>
+              <span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Media & Entertainment — Streaming / Broadcast &nbsp;·&nbsp; 10-K FY2023 (filed Feb 27, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$15.6B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$3,349M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">3.87x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.50x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.27x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">11/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:11%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">11/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">3.87x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 4.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:57%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+14.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">4.27x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:39%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+70.8%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">3.65x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.25x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:23%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+192.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$2631M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $1500M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:38%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+75.4%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Paramount sits at the intersection of two secular disruptions: the collapse of linear TV ad revenue and the cash-burning race to build a streaming subscriber base (Paramount+). The company lost ~$1.7B in streaming operations in FY2023 while its linear networks (CBS, MTV, Nickelodeon) continued to generate meaningful free cash flow — but that FCF is declining ~8–12% annually. NLR has drifted from 2.84x (Q4-2021) to 3.87x (Q4-2023), still within the 4.50x covenant ceiling but eroding at ~0.35x/year. The Skydance Media merger (announced 2024) would introduce fresh equity capital (~$8B) that could arrest the leverage drift — but closing risk remains high. S&P placed BBB– on Negative Watch in Oct 2023. If NLR crosses 4.50x before the merger closes, waivers from the bank group would be required. Status: WATCHLIST.</div>
+          </div>
+        </div>
+        <div id="company-HCA" style="background:#fff;border-radius:10px;border-left:4px solid #1A7A4A;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">HCA</span>
+              
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">HCA Healthcare Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">BB+ / Positive</span>
+              <span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Healthcare — Hospital Systems / Acute Care &nbsp;·&nbsp; 10-K FY2023 (filed Feb 23, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$39.3B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$12,289M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">3.10x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.50x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">6.72x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">6/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:6%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">6/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">3.10x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 4.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:46%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+31.1%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">6.72x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:25%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+168.8%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">4.14x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.25x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:20%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+231.2%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$1132M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $500M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:29%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+126.4%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">HCA is the world's largest for-profit hospital operator with 186 hospitals and 2,400+ ambulatory sites across 20 US states and the UK. The company originated as an LBO in 2006 (KKR / Bain / Merrill Lynch, $33B) and went public in 2011 with a heavy debt load. Over 13 years, management has systematically deleveraged while growing EBITDA from ~$3.5B to $12.3B — a textbook example of LBO-to-investment-grade execution. NLR is declining (-0.05x/quarter trend), ICR is improving (+0.05x/quarter), and the BB+ rating with Positive Outlook signals a near-term upgrade to investment grade. Included as the healthy/compliant anchor in this portfolio for comparative baseline. Status: COMPLIANT — strong buffer across all four covenants.</div>
+          </div>
+        </div>
+        <div id="company-ATUS" style="background:#fff;border-radius:10px;border-left:4px solid #C0392B;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">ATUS</span>
+              
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Altice USA Inc. (CSC Holdings)</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">CCC+ / Negative — Restructuring Risk</span>
+              <span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Cable & Telecommunications — Broadband / Pay-TV &nbsp;·&nbsp; 10-K FY2023 (filed Mar 5, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$32.5B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$3,573M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">8.96x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">7.00x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">1.92x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">90/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:90%;height:8px;background:#C0392B;border-radius:4px;"></div></div><span style="font-size:10px;color:#C0392B;font-weight:700;">90/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">8.96x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 7.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:85%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 28.0% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">1.92x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:69%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 4.0% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">0.77x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.10x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:95%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 30.0% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$487M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $500M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:68%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 2.6% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Altice USA (CSC Holdings operating entity) is the fourth-largest US cable operator, serving 4.9M customers in 21 states (notably New York metro / Optimum brand). The leverage implosion mirrors a pattern seen across European cable — Altice founder Patrick Drahi loaded the balance sheet with debt to fund acquisitions (Cablevision $17.7B in 2016, Suddenlink $9.1B in 2015) and shareholder returns. By 2023, all four tracked covenants are in breach. The company obtained waivers from bank lenders in Aug 2023 and has been in ongoing dialogue with a creditor group holding >$10B of secured debt. NLR hit 8.95x vs the 7.00x ceiling — a 28% breach depth. EBITDA is declining ~8% annually as subscriber losses (broadband -4.3% YoY) outpace ARPU gains. With ~$7B maturing before 2026 and ICR < 2.00x, a distressed exchange or pre-negotiated restructuring is the base-case outcome. Status: DEEP BREACH — all four covenants violated.</div>
+          </div>
+        </div>
+        <div id="company-BHC" style="background:#fff;border-radius:10px;border-left:4px solid #C0392B;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">BHC</span>
+              <span style="background:#C8DBFF;color:#1A3A5C;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:6px;">★ NEW SECTOR</span>
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Bausch Health Companies Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">B- / Negative</span>
+              <span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Specialty Pharmaceuticals — Branded & Generic Drugs &nbsp;·&nbsp; 10-K FY2023 (filed Mar 6, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$21.1B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$2,310M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">8.84x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">7.50x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">1.61x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">58/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:58%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">58/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">8.84x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 7.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:79%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 17.9% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">1.61x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.75x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:72%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 8.0% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">1.39x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:48%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+39.0%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$1271M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $750M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:39%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+69.5%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Bausch Health (formerly Valeant Pharmaceuticals) carries the legacy debt burden of an aggressive M&A roll-up strategy that collapsed under regulatory and reimbursement pressure in 2016. Despite significant restructuring, the company entered 2023 with $21.2B of total debt and LTM EBITDA of only $2.3B — a net leverage ratio of 8.84x against a 7.50x covenant ceiling. Two of four tracked covenants are in breach. The core thesis for recovery rested on completing the Bausch + Lomb (BLCO) spinoff and using equity proceeds to delever. However, debt market conditions and BHC's own covenant stress have delayed the transaction. Loss of exclusivity (LOE) for Xifaxan (rifaximin) — the company's largest product at ~$1.5B annual revenue — is expected by 2028 following Hatch-Waxman patent challenges. This creates a hard revenue cliff that further pressures EBITDA and accelerates the covenant deterioration trajectory. Near-term maturity wall: $3.5B TLB matures June 2025 — refinancing risk is acute. Status: BREACH — NLR and ICR violations; refinancing negotiations ongoing.</div>
+          </div>
+        </div>
+        <div id="company-M" style="background:#fff;border-radius:10px;border-left:4px solid #1A7A4A;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">M</span>
+              <span style="background:#C8DBFF;color:#1A3A5C;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:6px;">★ NEW SECTOR</span>
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Macy's Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">BB / Negative</span>
+              <span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Department Store Retail — Omnichannel Fashion & Home &nbsp;·&nbsp; 10-K FY2023 (52-week year ending Feb 3, 2024) &nbsp;·&nbsp; As of February 3, 2024
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$3.1B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$1,408M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">1.87x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">3.50x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">6.77x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">5/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:5%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div><span style="font-size:10px;color:#1A7A4A;font-weight:700;">5/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">1.87x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 3.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:36%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+46.6%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">6.77x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 3.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:30%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+125.7%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">3.76x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:27%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+150.7%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$796M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $600M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:50%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+32.7%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Macy's Inc. sits in a structurally challenged position as the largest US department store operator, navigating secular headwinds from fast fashion (Shein, Zara), off-price retail (TJX, Ross), and e-commerce (Amazon, brand DTC). While covenant headroom is comfortable (NLR 1.87x vs 3.50x ceiling), the macro outlook warrants watchlist placement due to three converging pressures: (1) discretionary spending compression as consumer savings rates normalize post-COVID — comparable store sales fell 5.0% in FY2023; (2) a hostile takeover approach by Arkhouse Management and Brigade Capital ($24/share bid, subsequently raised to $24.80) which if successful would layer additional acquisition debt onto the balance sheet and could breach covenants; (3) legacy debenture maturities ($733M) requiring refinancing in a higher-rate environment. The Bloomingdale's and Bluemercury segments provide some credit quality floor, and the company's 'Bold New Chapter' strategy — closing ~150 underperforming Macy's stores and investing in luxury/beauty — is directionally correct but execution-dependent. Trend: Stable NLR but deteriorating ICR driven by EBITDA margin compression. Status: WATCHLIST — NLR buffer 46.6% but takeover risk and earnings trajectory negative.</div>
+          </div>
+        </div>
+        <div id="company-LUMN" style="background:#fff;border-radius:10px;border-left:4px solid #C0392B;
+             box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:22px;overflow:hidden;">
+          <!-- Card header -->
+          <div style="background:#0A1628;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span style="color:#fff;font-size:18px;font-weight:800;letter-spacing:1px;">LUMN</span>
+              <span style="background:#C8DBFF;color:#1A3A5C;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:6px;">★ NEW SECTOR</span>
+              <span style="color:#B0C4DE;font-size:12px;margin-left:12px;">Lumen Technologies Inc.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="background:#1A3A5C;color:#B0C4DE;padding:3px 10px;border-radius:6px;font-size:11px;">CCC+ / Negative</span>
+              <span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span>
+            </div>
+          </div>
+          <!-- Sector + filing -->
+          <div style="background:#F8FAFD;padding:8px 20px;font-size:11px;color:#8A9BB0;border-bottom:1px solid #EEF0F3;">
+            Enterprise Fiber & Legacy Telecom — B2B Cloud Networking &nbsp;·&nbsp; 10-K FY2023 (filed Mar 5, 2024) &nbsp;·&nbsp; As of December 31, 2023
+          </div>
+          <!-- KPI strip -->
+          <div style="display:flex;gap:0;border-bottom:1px solid #EEF0F3;">
+            <div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$19.7B</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Total Debt</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">$4,126M</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">LTM EBITDA</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.51x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">NLR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">4.50x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Threshold</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">3.04x</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">ICR</div></div><div style="flex:1;padding:10px 16px;border-right:1px solid #EEF0F3;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:#0A1628;">68/100</div>
+              <div style="font-size:10px;color:#8A9BB0;margin-top:2px;">Severity</div></div>
+          </div>
+          <!-- Severity bar -->
+          <div style="padding:8px 20px 6px;background:#FAFBFD;">
+            <span style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;">Portfolio Severity Score</span>
+            <div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:68%;height:8px;background:#D4680A;border-radius:4px;"></div></div><span style="font-size:10px;color:#D4680A;font-weight:700;">68/100</span>
+          </div>
+          <!-- Covenant table -->
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#1A3A5C;">
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:left;font-weight:600;">COVENANT</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">ACTUAL</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">THRESHOLD</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">PROXIMITY</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">BUFFER</th>
+                <th style="padding:7px 8px;color:#B0C4DE;font-size:10px;text-align:center;font-weight:600;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Consolidated Net Leverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">4.51x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≤ 4.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:67%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 0.2% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Interest Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">3.04x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 2.50x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:55%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+21.6%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Fixed Charge Coverage Ratio</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">0.69x</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ 1.00x</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:97%;height:8px;background:#C0392B;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#C0392B;font-weight:700;">▼ 31.0% breach</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#F9E5E4;color:#C0392B;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #C0392B33;">BREACH</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 8px;font-size:11px;color:#4A5568;">Minimum Available Liquidity</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;font-weight:600;">$1584M</td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;color:#8A9BB0;">
+                ≥ $1000M</td>
+              <td style="padding:5px 8px;text-align:center;"><div style="background:#EEF0F3;border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="width:42%;height:8px;background:#1A7A4A;border-radius:4px;"></div></div></td>
+              <td style="padding:5px 8px;text-align:center;font-size:11px;"><span style="color:#1A7A4A;">+58.4%</span></td>
+              <td style="padding:5px 8px;text-align:center;"><span style="background:#E8F5EE;color:#1A7A4A;font-weight:700;padding:2px 9px;border-radius:12px;font-size:11px;border:1px solid #1A7A4A33;">COMPLIANT</span></td>
+            </tr></tbody>
+          </table>
+          <!-- Case notes -->
+          <div style="padding:12px 20px;background:#F8FAFD;border-top:1px solid #EEF0F3;">
+            <div style="font-size:10px;color:#8A9BB0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Investment Thesis & Case Notes</div>
+            <div style="font-size:11.5px;color:#2C3E50;line-height:1.7;">Lumen Technologies (formerly CenturyLink/CenturyTel) is a legacy telco in secular decline, operating a vast but shrinking copper network alongside a growing enterprise fiber platform. The company completed a landmark out-of-court debt restructuring in August 2023, exchanging ~$10B of near-term maturities at Lumen parent into extended new money instruments and isolating the Level 3 subsidiary debt silo. Despite this, the NLR covenant is in marginal breach at 4.51x vs 4.50x — effectively at the wall — and the FCCR has been crushed by the capital-intensive fiber network build program ($3.2B annual CapEx) required to stay competitive against AT&T Fiber, Comcast, and new entrant fiber overbuilders (Brightspeed). The core strategic dilemma: Lumen must invest heavily in fiber to stop customer erosion but that same CapEx suppresses FCCR and compresses free cash flow to near-zero. Revenue declined 8.6% YoY in FY2023, driven by legacy voice/copper product attrition (~$1.2B revenue per year exiting the network). The company carries a CCC+ rating with Negative outlook — distressed territory. A second restructuring event is increasingly likely within the 24-month planning horizon absent a strategic acquirer or asset sale (Quantum Fiber FTTP assets have been flagged as potential monetization). Status: BREACH — NLR marginally breached; FCCR deeply negative; second restructuring risk.</div>
+          </div>
+        </div>
+
+  <!-- FOOTER -->
+  <div style="margin-top:32px;padding:16px 20px;background:#F0F3F8;border-radius:8px;
+    border-top:2px solid #D0D7E2;text-align:center;">
+    <div style="font-size:11px;color:#8A9BB0;margin-bottom:4px;">
+      DDCSE v3.0 &nbsp;·&nbsp; github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame &nbsp;·&nbsp; May 26, 2026
+    </div>
+    <div style="font-size:10px;color:#A0AEC0;">
+      For analytical purposes only. Not investment advice. All data from SEC EDGAR public filings.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
