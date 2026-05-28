@@ -159,9 +159,9 @@ def _build_generic_graph() -> nx.DiGraph:
     graph = nx.DiGraph()
     graph.add_node("HoldCo",     entity_type="parent",           facility="Revolver",        label="HoldCo — Revolver",     face_value=400,  cross_default=True,  status="breach")
     graph.add_node("OpCo_A",     entity_type="subsidiary",       facility="Term Loan A",     label="OpCo A — TLA",          face_value=1270, cross_default=True,  status="warning")
-    graph.add_node("OpCo_B",     entity_type="subsidiary",       facility="Term Loan B",     label="OpCo B — TLB",          face_value=750,  cross_default=False, status="compliant")
+    graph.add_node("OpCo_B",     entity_type="subsidiary",       facility="Term Loan B",     label="OpCo B — TLB",          face_value=750,  cross_default=True,  status="compliant")
     graph.add_node("MinorSub_1", entity_type="minor_subsidiary", facility="ABL Facility",    label="Sub 1 — ABL",           face_value=200,  cross_default=True,  status="breach")
-    graph.add_node("MinorSub_2", entity_type="minor_subsidiary", facility="Equipment Notes", label="Sub 2 — Equip. Notes",  face_value=90,   cross_default=False, status="compliant")
+    graph.add_node("MinorSub_2", entity_type="minor_subsidiary", facility="Equipment Notes", label="Sub 2 — Equip. Notes",  face_value=90,   cross_default=True,  status="compliant")
     graph.add_edges_from(
         [("HoldCo", "OpCo_A"), ("HoldCo", "OpCo_B"),
          ("OpCo_A", "MinorSub_1"), ("OpCo_B", "MinorSub_2")],
