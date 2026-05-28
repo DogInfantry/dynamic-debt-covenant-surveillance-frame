@@ -29,6 +29,14 @@ class FakeTicker:
                 "2026-03-31": {
                     "Operating Income": 210.0,
                     "Depreciation And Amortization": 40.0,
+                    "Interest Expense": 35.0,
+                }
+            }
+        )
+        self.quarterly_cash_flow = pd.DataFrame(
+            {
+                "2026-03-31": {
+                    "Capital Expenditure": -60.0,   # yfinance convention: negative
                 }
             }
         )
@@ -81,6 +89,25 @@ class FinancialDataPipelineTests(unittest.TestCase):
 
         self.assertIsNone(payload["total_debt"])
         self.assertTrue(payload["errors"])
+
+    @patch("data_fetcher.yf.Ticker", FakeTicker)
+    def test_fetch_live_metrics_extracts_interest_expense_and_capex(self) -> None:
+        payload = FinancialDataPipeline().fetch_live_metrics("MSFT")
+
+        self.assertEqual(payload.get("interest_expense"), 35.0)
+        self.assertEqual(payload.get("capex"), 60.0)          # abs of -60.0
+
+    @patch("data_fetcher.yf.Ticker", FakeTicker)
+    def test_refresh_case_from_live_returns_patch_dict(self) -> None:
+        result = FinancialDataPipeline().refresh_case_from_live("MSFT")
+
+        # Even with FakeTicker the patch should contain core metrics
+        patch = result.get("patch", {})
+        self.assertIn("total_debt", patch)
+        self.assertIn("cash", patch)
+        self.assertIn("ebitda_ltm", patch)
+        self.assertIn("live_data_as_of", patch)
+        self.assertFalse(result.get("stale"))
 
 
 if __name__ == "__main__":
