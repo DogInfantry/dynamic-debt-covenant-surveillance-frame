@@ -23,8 +23,11 @@ class CovenantRuleConfig(TypedDict):
     source_text: str
 
 
-class FinancialPayload(TypedDict):
-    """Standardized financial statement payload used by the UI and analytics."""
+class FinancialPayload(TypedDict, total=False):
+    """Standardized financial statement payload used by the UI and analytics.
+
+    v3 additions: interest_expense, capex, revenue (all optional — total=False).
+    """
 
     ticker: str
     source: str
@@ -35,9 +38,13 @@ class FinancialPayload(TypedDict):
     total_debt: float | None
     cash: float | None
     ebitda: float | None
+    interest_expense: float | None   # v3
+    capex: float | None              # v3
+    revenue: float | None            # v3
     net_debt: float | None
     lineage: dict[str, str | None]
     errors: list[str]
+    warnings: list[str]              # v3 — non-fatal notices (fallback source, stale data)
 
 
 class AuditRecord(TypedDict):
