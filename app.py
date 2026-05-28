@@ -24,7 +24,7 @@ import streamlit as st
 from analytics import CorporateDebtNetwork, track_buffer_proximity, FacilityMetrics
 from audit import audit_record_to_json, build_audit_record
 from compiler import CompiledCovenant, CovenantCompiler
-from data_fetcher import FinancialDataPipeline
+from data_fetcher import FinancialDataPipeline, _YFINANCE_AVAILABLE
 from ingestion import covenant_templates
 from real_cases import get_case, list_cases, CASE_REGISTRY
 from analytics_v2 import evaluate_package, portfolio_severity_score, CovenantResult
@@ -294,6 +294,27 @@ def main() -> None:
         "NetworkX cross-default cascade · Real distressed case data"
     )
 
+    # ── Staleness banner (v3) ─────────────────────────────────────────────────
+    if st.session_state.get("mode_radio", "Real Case (Ch.11 Filing)") == "Real Case (Ch.11 Filing)":
+        import datetime as _dt
+        _case_key_for_banner = st.session_state.get("selected_case", "CHTR")
+        _refresh = st.session_state.get(f"refresh_{_case_key_for_banner}")
+        _case_for_banner = CASE_REGISTRY.get(_case_key_for_banner, {})
+        _as_of_str = (_case_for_banner.get("as_of") or "")
+        _stale = True
+        try:
+            _as_of_dt = _dt.datetime.strptime(_as_of_str, "%B %d, %Y")
+            _stale = (_dt.datetime.utcnow() - _as_of_dt).days > 90
+        except Exception:
+            pass
+        if _stale and not (_refresh and not _refresh.get("stale")):
+            st.warning(
+                f"⚠ **Stale data** — figures are from **{_as_of_str or 'a past filing'}**. "
+                "Click **🔄 Refresh Live Data** in the sidebar to load the latest quarterly results.",
+                icon=None,
+            )
+    # ─────────────────────────────────────────────────────────────────────────
+
     # ── Sidebar ──────────────────────────────────────────────────────────────
     st.sidebar.header("Mode")
     mode = st.sidebar.radio(
@@ -321,14 +342,55 @@ def main() -> None:
         }
         selected_label = st.sidebar.selectbox("Select filing case", list(case_options.keys()))
         case_key = case_options[selected_label]
-        case_data = get_case(case_key)
+        case_data = dict(get_case(case_key))   # mutable copy for live patch
         case_name = case_data["name"]
+
+        # ── Live Refresh (v3) ────────────────────────────────────────────────
+        refresh_result = st.session_state.get(f"refresh_{case_key}", None)
+
+        # Apply any previously fetched live patch
+        live_data_as_of = None
+        if refresh_result and not refresh_result.get("stale"):
+            patch = refresh_result.get("patch", {})
+            for field in ("total_debt", "cash", "ebitda_ltm", "interest_expense_ltm",
+                          "capex_ltm", "revenue_ltm", "as_of", "trend_nlr",
+                          "trend_icr", "trend_quarters"):
+                if field in patch:
+                    case_data[field] = patch[field]
+            live_data_as_of = patch.get("live_data_as_of")
+
+            # Recompute covenant actuals with live figures
+            if "total_debt" in patch and "cash" in patch and "ebitda_ltm" in patch:
+                nlr_live = (case_data["total_debt"] - case_data["cash"]) / case_data["ebitda_ltm"]
+                icr_live = (case_data["ebitda_ltm"] / case_data["interest_expense_ltm"]
+                            if case_data.get("interest_expense_ltm") else None)
+                cov = list(case_data["covenants"])
+                if cov:
+                    cov[0] = dict(cov[0], actual=round(nlr_live, 2))
+                if icr_live and len(cov) > 1:
+                    cov[1] = dict(cov[1], actual=round(icr_live, 2))
+                case_data["covenants"] = cov
+
+        if st.sidebar.button("🔄 Refresh Live Data", disabled=not _YFINANCE_AVAILABLE,
+                              help="Fetch latest quarterly figures from yfinance"):
+            with st.spinner("Fetching live financials…"):
+                result = FinancialDataPipeline().refresh_case_from_live(case_data["ticker"])
+                st.session_state[f"refresh_{case_key}"] = result
+            if result.get("stale") or result.get("errors"):
+                st.sidebar.warning("Live refresh failed — " + "; ".join(result.get("errors", [])))
+            else:
+                st.sidebar.success(f"Updated to {result['patch'].get('as_of', 'latest quarter')}")
+            st.rerun()
+
+        if not _YFINANCE_AVAILABLE:
+            st.sidebar.caption("⚠ yfinance unavailable — showing static SEC filing data.")
+        # ── End Live Refresh ─────────────────────────────────────────────────
 
         st.session_state["total_debt"] = case_data["total_debt"]
         st.session_state["cash"] = case_data["cash"]
         st.session_state["ebitda"] = case_data["ebitda_ltm"]
         st.session_state["source_payload"] = {
-            "source": case_data["filing"],
+            "source": case_data["filing"] + (" + yfinance live" if live_data_as_of else ""),
             "ticker": case_data["ticker"],
             "errors": [],
         }
@@ -343,6 +405,7 @@ def main() -> None:
             f"**Outlook:** {case_data['outlook']}  \n"
             f"**Total Debt:** ${case_data['total_debt']:,.0f}M  \n"
             f"**Filing:** {case_data['filing_date']}"
+            + (f"  \n**Live as of:** {live_data_as_of}" if live_data_as_of else "")
         )
 
     # ── Live market mode ─────────────────────────────────────────────────────
