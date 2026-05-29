@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDCSE — Spirit Airlines (SAVE) · Aviation Sector · Ch.11 Surveillance Report</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:      #0A1628;
+  --ink2:     #2C4A6E;
+  --ink3:     #4A6C8A;
+  --muted:    #8A9BB0;
+  --surface:  #F7F9FC;
+  --border:   #DDE3EC;
+  --breach:   #C0392B;
+  --breach-bg:#FDF0EE;
+  --watch:    #D4680A;
+  --watch-bg: #FDF5EE;
+  --ok:       #1A7A4A;
+  --ok-bg:    #EAF5EF;
+  --navy:     #0A1628;
+  --navy2:    #1A3A5C;
+  --accent:   #2463A4;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #F0F3F8;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 0 0 48px; }
+
+/* ── COVER ── */
+.cover {
+  background: linear-gradient(135deg, #0A1628 0%, #1A3A5C 55%, #2463A4 100%);
+  padding: 44px 48px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 40px,
+    rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px
+  );
+}
+.cover-eyebrow {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: #7FAFD4; margin-bottom: 10px; position: relative;
+}
+.cover-title {
+  color: #fff; font-size: 28px; font-weight: 800;
+  letter-spacing: -0.3px; margin-bottom: 4px; position: relative;
+}
+.cover-sub {
+  color: #7FAFD4; font-size: 13px; margin-bottom: 28px; position: relative;
+}
+
+.ch11-banner {
+  background: rgba(192,57,43,0.18);
+  border: 1px solid rgba(192,57,43,0.45);
+  border-radius: 6px;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.ch11-banner-title {
+  color: #FFB3AE; font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+}
+.ch11-banner-body { color: #FFCFCC; font-size: 11px; line-height: 1.6; }
+
+.kpi-strip {
+  display: flex; gap: 12px; flex-wrap: wrap; position: relative;
+}
+.kpi-tile {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px; padding: 14px 20px; min-width: 110px; text-align: center;
+}
+.kpi-tile-val {
+  color: #fff; font-size: 22px; font-weight: 800; line-height: 1;
+}
+.kpi-tile-val.breach-val { color: #FF8A80; }
+.kpi-tile-label {
+  color: #7FAFD4; font-size: 9px; margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.7px;
+}
+
+/* ── NAV ── */
+.nav-bar {
+  background: var(--navy2); padding: 0 48px;
+  display: flex; gap: 4px; overflow-x: auto;
+}
+.nav-link {
+  color: #B0C4DE; text-decoration: none; padding: 11px 12px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+  border-bottom: 2px solid transparent; display: inline-block;
+}
+.nav-link:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.4); }
+
+/* ── BODY ── */
+.body-wrap { padding: 32px 48px; }
+
+.section { margin-bottom: 36px; }
+.section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--accent);
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+  margin-bottom: 16px;
+}
+
+/* ── CARDS GRID ── */
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.info-card {
+  background: #fff; border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+}
+.info-card-label {
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.7px; color: var(--muted); margin-bottom: 6px;
+}
+.info-card-val {
+  font-size: 20px; font-weight: 800; color: var(--ink); line-height: 1;
+}
+.info-card-val.breach { color: var(--breach); }
+.info-card-val.ok { color: var(--ok); }
+.info-card-note {
+  font-size: 10px; color: var(--muted); margin-top: 4px;
+}
+
+/* ── PILL ── */
+.pill {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 9px; border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.pill-breach { background: var(--breach-bg); color: var(--breach); border: 1px solid rgba(192,57,43,0.25); }
+.pill-watch  { background: var(--watch-bg);  color: var(--watch);  border: 1px solid rgba(212,104,10,0.25); }
+.pill-ok     { background: var(--ok-bg);     color: var(--ok);     border: 1px solid rgba(26,122,74,0.25); }
+.pill-d      { background: #1a0a0a; color: #FF8A80; border: 1px solid rgba(255,138,128,0.4); }
+
+/* ── COVENANT TABLE ── */
+table.cov { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+table.cov thead tr { background: var(--navy); }
+table.cov th {
+  padding: 9px 12px; color: #B0C4DE;
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.6px; font-weight: 700; text-align: left;
+}
+table.cov th.r { text-align: right; }
+table.cov td { padding: 8px 12px; border-top: 1px solid var(--border); font-size: 11px; }
+table.cov td.r { text-align: right; font-family: 'Consolas', 'Courier New', monospace; }
+table.cov tr:hover td { background: #F7F9FC; }
+
+.rag-bar-wrap {
+  width: 80px; height: 6px; background: var(--border);
+  border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle;
+}
+.rag-bar { height: 6px; border-radius: 3px; }
+.mono { font-family: 'Consolas', 'Courier New', monospace; }
+
+/* ── DEBT STACK ── */
+.stack-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+.stack-tranche { min-width: 200px; color: var(--ink2); font-weight: 600; }
+.stack-meta { flex: 1; color: var(--muted); }
+.stack-bar-wrap {
+  width: 100px; height: 7px; background: var(--border);
+  border-radius: 3px; overflow: hidden;
+}
+.stack-bar { height: 7px; border-radius: 3px; }
+.stack-val { min-width: 60px; text-align: right; font-family: 'Consolas', monospace; font-weight: 700; }
+
+/* ── TREND ── */
+.trend-sparkline {
+  display: inline-flex; align-items: flex-end; gap: 3px; height: 28px;
+}
+.spark { width: 7px; border-radius: 2px 2px 0 0; }
+
+.trend-table { width: 100%; border-collapse: collapse; }
+.trend-table th {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--muted); padding: 0 6px 6px; font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.trend-table td {
+  font-family: 'Consolas', monospace; font-size: 11px;
+  padding: 6px; text-align: center; border-bottom: 1px solid var(--border);
+}
+.trend-table td.breach-cell { color: var(--breach); font-weight: 700; }
+.trend-table td.q { color: var(--muted); font-family: inherit; font-size: 10px; }
+
+/* ── SHOCK MATRIX ── */
+.shock-wrap { overflow-x: auto; }
+.shock-table { border-collapse: collapse; font-size: 10px; }
+.shock-table th {
+  background: var(--navy); color: #B0C4DE;
+  padding: 6px 10px; font-size: 9px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.shock-table td {
+  padding: 6px 10px; text-align: center;
+  font-family: 'Consolas', monospace; border: 1px solid var(--border);
+}
+.shock-breach { background: var(--breach-bg); color: var(--breach); font-weight: 700; }
+.shock-ok     { background: var(--ok-bg);     color: var(--ok); }
+.shock-watch  { background: var(--watch-bg);  color: var(--watch); }
+.shock-label  { background: var(--surface); color: var(--muted); font-family: inherit; }
+
+/* ── TIMELINE ── */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before {
+  content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
+  width: 1px; background: var(--border);
+}
+.tl-item { position: relative; margin-bottom: 16px; }
+.tl-dot {
+  position: absolute; left: -21px; top: 4px;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--border); background: #fff;
+}
+.tl-dot.breach { border-color: var(--breach); background: var(--breach); }
+.tl-dot.watch  { border-color: var(--watch);  background: var(--watch); }
+.tl-dot.ok     { border-color: var(--ok);     background: var(--ok); }
+.tl-date { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+.tl-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.tl-body  { font-size: 11px; color: var(--ink3); line-height: 1.6; }
+
+/* ── NOTES ── */
+.notes-box {
+  background: #fff; border-radius: 8px; border: 1px solid var(--border);
+  padding: 20px 22px; font-size: 11.5px; color: var(--ink2); line-height: 1.75;
+}
+.notes-source {
+  margin-top: 14px; font-size: 10px; color: var(--muted);
+  border-top: 1px solid var(--border); padding-top: 10px;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center; padding: 20px 48px;
+  border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--muted);
+}
+
+@media print {
+  body { background: #fff; }
+  .nav-bar { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">DDCSE v3.0 · Private Credit · Aviation Sector · Covenant Surveillance Report</div>
+  <div class="cover-title">Spirit Airlines Inc. (SAVE)</div>
+  <div class="cover-sub">Ultra-Low-Cost Carrier · Ch.11 Filed Nov 18, 2024 · SDNY Case No. 24-11988 (SHL) · May 29, 2026</div>
+
+  <div class="ch11-banner">
+    <div class="ch11-banner-title">⚑ Chapter 11 Bankruptcy — All Covenants in Catastrophic Breach</div>
+    <div class="ch11-banner-body">
+      Spirit Airlines filed voluntary Chapter 11 in the Southern District of New York on November 18, 2024.
+      All four tracked covenants are in material breach. Cross-default cascade triggered across $2.44B in secured tranches.
+      Emerged from bankruptcy May 2025 as a substantially smaller carrier with ~$795M in exit financing.
+    </div>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi-tile"><div class="kpi-tile-val breach-val">24.33x</div><div class="kpi-tile-label">NLR (vs 5.50x)</div></div>
+    <div class="kpi-tile"><div class="kpi-tile-val breach-val">0.35x</div><div class="kpi-tile-label">ICR (vs 1.50x)</div></div>
+    <div class="kpi-tile"><div class="kpi-tile-val breach-val">–0.82x</div><div class="kpi-tile-label">FCCR (vs 1.00x)</div></div>
+    <div class="kpi-tile"><div class="kpi-tile-val">$3.33B</div><div class="kpi-tile-label">Total Debt</div></div>
+    <div class="kpi-tile"><div class="kpi-tile-val">$101M</div><div class="kpi-tile-label">LTM EBITDA</div></div>
+    <div class="kpi-tile"><div class="kpi-tile-val breach-val">D</div><div class="kpi-tile-label">S&P Rating</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <a class="nav-link" href="#overview">Overview</a>
+  <a class="nav-link" href="#covenants">Covenants</a>
+  <a class="nav-link" href="#debt-stack">Debt Stack</a>
+  <a class="nav-link" href="#trend">Trend</a>
+  <a class="nav-link" href="#shock">Shock Matrix</a>
+  <a class="nav-link" href="#timeline">Timeline</a>
+  <a class="nav-link" href="#thesis">Investment Thesis</a>
+</div>
+
+<div class="body-wrap">
+
+<!-- OVERVIEW -->
+<div class="section" id="overview">
+  <div class="section-title">Company Overview</div>
+  <div class="cards-grid">
+    <div class="info-card">
+      <div class="info-card-label">Net Leverage Ratio</div>
+      <div class="info-card-val breach">24.33x</div>
+      <div class="info-card-note">Threshold: ≤ 5.50x · Breach depth: +342.4%</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Interest Coverage Ratio</div>
+      <div class="info-card-val breach">0.35x</div>
+      <div class="info-card-note">Threshold: ≥ 1.50x · Cannot service debt from EBITDA</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Total Debt (face value)</div>
+      <div class="info-card-val">$3.33B</div>
+      <div class="info-card-note">EETC + TLB + Loyalty Notes + Lease obligations</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">LTM EBITDA (Adj.)</div>
+      <div class="info-card-val">$101M</div>
+      <div class="info-card-note">FY2023 · Post-restructuring addbacks per 10-K</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Unrestricted Cash</div>
+      <div class="info-card-val ok">$872M</div>
+      <div class="info-card-note">As of Dec 31, 2023 · Burning ~$65M/month pre-filing</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Portfolio Severity Score</div>
+      <div class="info-card-val breach">99 / 100</div>
+      <div class="info-card-note">Highest severity in DDCSE portfolio · Ch.11 filed</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px; background:#fff; border-radius:8px; border:1px solid var(--border); padding:16px 18px;">
+    <table style="width:100%;border-collapse:collapse;font-size:11px;">
+      <tr>
+        <td style="padding:5px 12px 5px 0;color:var(--muted);width:140px;">Ticker</td>
+        <td style="padding:5px 0;font-weight:700;">SAVE (NYSE — delisted Nov 2024)</td>
+        <td style="padding:5px 12px 5px 24px;color:var(--muted);width:140px;">Exchange</td>
+        <td style="padding:5px 0;">NYSE (suspended Nov 18, 2024)</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 12px 5px 0;color:var(--muted);">Sector</td>
+        <td>Aviation — Ultra-Low-Cost Carrier (ULCC)</td>
+        <td style="padding:5px 12px 5px 24px;color:var(--muted);">Filing</td>
+        <td>10-K FY2023 + Ch.11 First-Day Declaration</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 12px 5px 0;color:var(--muted);">S&P Rating</td>
+        <td><span class="pill pill-d">D — Chapter 11</span></td>
+        <td style="padding:5px 12px 5px 24px;color:var(--muted);">Financials As Of</td>
+        <td>December 31, 2023</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 12px 5px 0;color:var(--muted);">Revenue (LTM)</td>
+        <td class="mono">$5,364M</td>
+        <td style="padding:5px 12px 5px 24px;color:var(--muted);">Enterprise Value</td>
+        <td class="mono">~$2,100M (DIP-implied)</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 12px 5px 0;color:var(--muted);">Bankruptcy Court</td>
+        <td>SDNY — Case No. 24-11988 (SHL)</td>
+        <td style="padding:5px 12px 5px 24px;color:var(--muted);">Emergence</td>
+        <td>May 2025 (~6 months in Ch.11)</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- COVENANT PACKAGE -->
+<div class="section" id="covenants">
+  <div class="section-title">Covenant Package — Full Article VI Tests</div>
+  <table class="cov">
+    <thead>
+      <tr>
+        <th>Covenant</th>
+        <th>Type</th>
+        <th class="r">Actual</th>
+        <th class="r">Threshold</th>
+        <th>Proximity</th>
+        <th class="r">Buffer</th>
+        <th class="r">Status</th>
+        <th class="r">Severity</th>
+      </tr>
+    </thead>
+    <tbody id="cov-tbody">
+      <!-- filled by JS -->
+    </tbody>
+  </table>
+</div>
+
+<!-- DEBT STACK -->
+<div class="section" id="debt-stack">
+  <div class="section-title">Debt Stack — Tranche Detail ($3.33B Face Value)</div>
+  <div style="background:#fff;border-radius:8px;border:1px solid var(--border);padding:16px 18px;" id="stack-container">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- TREND -->
+<div class="section" id="trend">
+  <div class="section-title">Trend Erosion Signal — 8-Quarter NLR &amp; ICR History</div>
+
+  <div style="background:#fff;border-radius:8px;border:1px solid var(--border);padding:16px 18px;margin-bottom:12px;">
+    <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px;">
+      <div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);margin-bottom:4px;">Direction</div>
+        <div style="font-size:13px;font-weight:700;color:var(--breach);">↑ Deteriorating (catastrophic)</div>
+      </div>
+      <div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);margin-bottom:4px;">NLR Velocity</div>
+        <div style="font-size:13px;font-weight:700;color:var(--breach);">+2.30x / quarter</div>
+      </div>
+      <div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);margin-bottom:4px;">ICR Velocity</div>
+        <div style="font-size:13px;font-weight:700;color:var(--breach);">–0.019x / quarter</div>
+      </div>
+      <div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);margin-bottom:4px;">Qtrs to Breach Est.</div>
+        <div style="font-size:13px;font-weight:700;color:var(--breach);">Already breached · Ch.11 filed</div>
+      </div>
+    </div>
+
+    <table class="trend-table" style="width:100%;">
+      <thead>
+        <tr>
+          <th style="text-align:left;">Quarter</th>
+          <th>Q4-21</th><th>Q1-22</th><th>Q2-22</th><th>Q3-22</th>
+          <th>Q4-22</th><th>Q1-23</th><th>Q2-23</th><th>Q4-23</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:left;color:var(--muted);font-family:inherit;font-size:10px;">NLR (thresh 5.50x)</td>
+          <td class="breach-cell">8.21</td>
+          <td class="breach-cell">9.44</td>
+          <td class="breach-cell">13.82</td>
+          <td class="breach-cell">18.90</td>
+          <td class="breach-cell">21.44</td>
+          <td class="breach-cell">22.88</td>
+          <td class="breach-cell">23.71</td>
+          <td class="breach-cell">24.33</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--muted);font-family:inherit;font-size:10px;">ICR (thresh 1.50x)</td>
+          <td class="breach-cell">0.48</td>
+          <td class="breach-cell">0.41</td>
+          <td class="breach-cell">0.39</td>
+          <td class="breach-cell">0.37</td>
+          <td class="breach-cell">0.35</td>
+          <td class="breach-cell">0.36</td>
+          <td class="breach-cell">0.35</td>
+          <td class="breach-cell">0.35</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--muted);margin-top:10px;">
+      Note: NLR and ICR have been in breach since Q4-2021 (first quarter after COVID fleet re-delivery). 
+      Covenant waivers were obtained repeatedly through 2022–2023.
+    </div>
+  </div>
+</div>
+
+<!-- MACRO SHOCK MATRIX -->
+<div class="section" id="shock">
+  <div class="section-title">Macro Shock Sensitivity — NLR Matrix (EBITDA × Debt)</div>
+  <div style="background:#fff;border-radius:8px;border:1px solid var(--border);padding:16px 18px;">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:12px;">
+      Base NLR: <strong style="color:var(--breach);">24.33x</strong> &nbsp;·&nbsp;
+      Covenant threshold: <strong>5.50x</strong> &nbsp;·&nbsp;
+      <span style="background:var(--breach-bg);color:var(--breach);padding:1px 6px;border-radius:3px;font-weight:700;">● = breach</span>
+      &nbsp;
+      <span style="background:var(--ok-bg);color:var(--ok);padding:1px 6px;border-radius:3px;font-weight:700;">● = compliant</span>
+    </div>
+    <div class="shock-wrap" id="shock-matrix"><!-- filled by JS --></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="section" id="timeline">
+  <div class="section-title">Key Events Timeline</div>
+  <div style="background:#fff;border-radius:8px;border:1px solid var(--border);padding:20px 22px;">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot ok"></div>
+        <div class="tl-date">Feb 2022</div>
+        <div class="tl-title">Frontier merger announced — $2.9B all-stock deal</div>
+        <div class="tl-body">Spirit agrees to merge with Frontier Airlines in a deal valued at $2.9B. Combined entity would create a 4th major ULCC with ~230 aircraft and $5.3B in revenue.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot watch"></div>
+        <div class="tl-date">Apr 2022</div>
+        <div class="tl-title">JetBlue hostile bid — $3.6B cash offer (superior value)</div>
+        <div class="tl-body">JetBlue launches unsolicited $3.6B cash acquisition bid, later sweetened to $3.8B with a $200M reverse termination fee. Spirit board eventually accepts after multiple engagement rounds.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot watch"></div>
+        <div class="tl-date">Jul 2022</div>
+        <div class="tl-title">Frontier merger terminated — Spirit shareholders prefer JetBlue cash</div>
+        <div class="tl-body">Spirit shareholders vote down the Frontier merger. JetBlue/Spirit merger agreement signed. DoJ announces its intent to challenge on antitrust grounds.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot breach"></div>
+        <div class="tl-date">Jan 2024</div>
+        <div class="tl-title">JetBlue merger blocked — DoJ antitrust ruling upheld by Federal court</div>
+        <div class="tl-body">Federal district court enjoins the JetBlue/Spirit merger on antitrust grounds, citing harm to ULCC competition. Spirit left as a standalone carrier with no strategic path. NLR now 22.88x. S&P downgrades to CCC–.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot breach"></div>
+        <div class="tl-date">Mar 2024</div>
+        <div class="tl-title">FY2023 10-K filed — covenant breaches formally disclosed</div>
+        <div class="tl-body">NLR disclosed at 24.33x vs 5.50x covenant ceiling. Three of four covenants in material breach. Waivers obtained but lender group signaling unwillingness to extend further. Stock trades below $2.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot breach"></div>
+        <div class="tl-date">Sep 2024</div>
+        <div class="tl-title">$1.1B Loyalty Notes waiver expires — acceleration risk imminent</div>
+        <div class="tl-body">Loyalty Note holders decline to extend covenant waiver. Term Loan B lenders issue notice of default. Cross-default provisions triggered across EETC tranches. Cash balance ~$380M (burned $492M since Dec 2023).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot breach"></div>
+        <div class="tl-date">Nov 18, 2024</div>
+        <div class="tl-title">Chapter 11 filed — SDNY Case No. 24-11988 (SHL)</div>
+        <div class="tl-body">Spirit Airlines voluntarily files Ch.11. $300M DIP financing arranged (convertible to exit debt). Operations continue. Loyalty Notes equitized at ~32 cents on the dollar. EETC holders receive aircraft return/restructured payments.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot ok"></div>
+        <div class="tl-date">May 2025</div>
+        <div class="tl-title">Emergence from Chapter 11 — 6 months in restructuring</div>
+        <div class="tl-body">Spirit emerges as a substantially smaller carrier (~90 aircraft, down from ~200). $795M exit financing. Equity held by former Loyalty Note holders. Unsecured creditors receive nominal recovery. NLR target: &lt;4.0x on smaller debt base.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THESIS -->
+<div class="section" id="thesis">
+  <div class="section-title">Investment Thesis &amp; Case Notes</div>
+  <div class="notes-box">
+    Spirit Airlines represents the definitive case study of ULCC model fragility under financial stress. The company's revenue model — ultra-stripped base fares with aggressive ancillary monetization (bag fees, seat selection, priority boarding) — generated structural EBITDA margins of 8–12% in normal operating conditions. These margins are insufficient to service a $3.3B debt load that was accumulated during COVID-era fleet acquisitions and sale-leaseback transactions at historically low interest rates.
+    <br><br>
+    <strong>Three compounding failure mechanisms:</strong>
+    <br><br>
+    (1) <strong>M&A Limbo (2022–2024):</strong> Spirit spent 26 months in a state of strategic paralysis — first awaiting the Frontier merger outcome, then the JetBlue transaction. During this window, management deferred cost optimization and fleet rationalization, burning cash while competitors (Southwest, Delta, United) invested in network upgrades. The DoJ's JetBlue block in January 2024 crystallized the terminal nature of Spirit's standalone balance sheet.
+    <br><br>
+    (2) <strong>ULCC Margin Compression:</strong> The post-COVID normalization of fuel costs (+38% YoY in 2022), labor agreements (pilots' contract at +34% over 4 years), and maintenance cycle catch-up destroyed ULCC economics. Spirit's EBITDA margin collapsed from ~18% in FY2019 to under 2% in FY2023 on $5.4B revenue. At this EBITDA level, $3.3B in debt produces a NLR of 24.33x — mathematically insolvent.
+    <br><br>
+    (3) <strong>Cross-Default Cascade:</strong> The interconnected covenant structure meant that once the Term Loan B covenant waivers expired in September 2024, acceleration clauses triggered across the EETC tranches (secured by aircraft), the Loyalty Notes (secured by the Free Spirit program), and ultimately all lease obligations. Total at-risk debt in the cascade: $2.44B across the secured stack.
+    <br><br>
+    <strong>Recovery implications:</strong> EETC holders (aircraft-backed, highest seniority) received ~$0.78/$1.00 through aircraft rejections and restructured operating leases. Loyalty Note holders received equity in the reorganized entity at ~$0.32/$1.00. Unsecured creditors recovered less than $0.05/$1.00. Common equity was cancelled.
+    <br><br>
+    <strong>Sector read-across:</strong> Frontier Airlines, Allegiant Air, and Avelo Airlines all carry leverage profiles that warrant surveillance. ULCC business models with Debt/EBITDA above 4.0x and ICR below 2.0x should be classified as structural watchlist credits.
+    <div class="notes-source">
+      Sources: Spirit Airlines 10-K FY2023 (SEC CIK 0001498710) · Ch.11 First-Day Declaration (SDNY, Nov 18, 2024) ·
+      Spirit Airlines Disclosure Statement (Jan 2025) · S&P/Moody's press releases ·
+      DDCSE v3.0 Analytics Engine · github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame
+    </div>
+  </div>
+</div>
+
+</div><!-- /body-wrap -->
+
+<div class="footer">
+  DDCSE v3.0 &nbsp;·&nbsp; github.com/DogInfantry/dynamic-debt-covenant-surveillance-frame &nbsp;·&nbsp;
+  May 29, 2026 &nbsp;·&nbsp; For analytical purposes only. Not investment advice. All data from SEC EDGAR public filings.
+</div>
+
+</div><!-- /page -->
+
+<script>
+const COV_DATA = [
+  { name:"Consolidated Net Leverage Ratio", type:"Leverage", thresh:5.50, actual:24.33, op:"lte", unit:"x" },
+  { name:"Interest Coverage Ratio",         type:"Coverage", thresh:1.50, actual:0.35,  op:"gte", unit:"x" },
+  { name:"Fixed Charge Coverage Ratio",     type:"FCCR",     thresh:1.00, actual:-0.82, op:"gte", unit:"x" },
+  { name:"Minimum Unrestricted Cash",       type:"Liquidity",thresh:500,  actual:872,   op:"gte", unit:"$M" },
+];
+const STACK_DATA = [
+  { name:"$841M EETC (A/B tranches)", seniority:"Aircraft-Secured 1L", rate:"3.375%–4.10%", maturity:"2025-08", val:841,  status:"breach" },
+  { name:"$500M Term Loan B (2021)",  seniority:"Sr Secured (slots/IP)", rate:"SOFR+525",    maturity:"2025-09", val:500,  status:"breach" },
+  { name:"$1.1B Loyalty Notes",       seniority:"Sr Secured (FSY prog)", rate:"8.00% Fixed", maturity:"2025-09", val:1100, status:"breach" },
+  { name:"$889M Lease & Other",       seniority:"Sr Unsecured / Leases", rate:"5.25%–9.50%", maturity:"2026–28", val:889,  status:"breach" },
+];
+const MAX_STACK = Math.max(...STACK_DATA.map(d => d.val));
+const STATUS_COLOR = { breach:"#C0392B", watch:"#D4680A", ok:"#1A7A4A" };
+const STATUS_BG    = { breach:"#FDF0EE", watch:"#FDF5EE", ok:"#EAF5EF" };
+const PILL_CLASS   = { breach:"pill-breach", watch:"pill-watch", ok:"pill-ok" };
+
+function pillHtml(status, label) {
+  return `<span class="pill ${PILL_CLASS[status]}">${label}</span>`;
+}
+
+function covStatus(cov) {
+  const { thresh, actual, op } = cov;
+  const compliant = op === "lte" ? actual <= thresh : actual >= thresh;
+  const buf = op === "lte" ? (thresh - actual) / thresh : (actual - thresh) / thresh;
+  const status = compliant ? (buf < 0.10 ? "watch" : "ok") : "breach";
+  return { compliant, buf, status };
+}
+
+function ragBar(buf, status) {
+  const w = Math.min(Math.abs(buf) * 100 / 100 * 100, 100).toFixed(0);
+  return `<div class="rag-bar-wrap"><div class="rag-bar" style="width:${w}%;background:${STATUS_COLOR[status]};"></div></div>`;
+}
+
+// Covenants
+const tbody = document.getElementById("cov-tbody");
+const sevMap = { breach:[60,100], watch:[30,60], ok:[0,30] };
+tbody.innerHTML = COV_DATA.map(cov => {
+  const { buf, status } = covStatus(cov);
+  const bufStr = buf >= 0 ? `+${(buf*100).toFixed(1)}%` : `${(buf*100).toFixed(1)}%`;
+  const actualFmt = cov.unit === "$M" ? `$${cov.actual.toFixed(0)}M` : `${cov.actual.toFixed(2)}x`;
+  const threshFmt = cov.unit === "$M" ? `$${cov.thresh.toFixed(0)}M` : `${cov.thresh.toFixed(2)}x`;
+  const opSymbol  = cov.op === "lte" ? "≤" : "≥";
+  const sev       = status === "breach" ? Math.min(60 + Math.abs(buf)/0.25*25, 100).toFixed(0) :
+                    status === "watch"  ? (30 + (1 - buf/0.10)*30).toFixed(0) : "5";
+  return `<tr>
+    <td>${cov.name}</td>
+    <td style="color:#8A9BB0">${cov.type}</td>
+    <td class="r" style="color:${STATUS_COLOR[status]};font-weight:700">${actualFmt}</td>
+    <td class="r" style="color:#8A9BB0">${opSymbol} ${threshFmt}</td>
+    <td>${ragBar(buf, status)}</td>
+    <td class="r" style="color:${STATUS_COLOR[status]};font-weight:${status==="breach"?"700":"400"}">${bufStr}</td>
+    <td class="r">${pillHtml(status, status === "breach" ? "BREACH" : status === "watch" ? "WATCHLIST" : "COMPLIANT")}</td>
+    <td class="r" style="color:${STATUS_COLOR[status]};font-weight:700">${sev}/100</td>
+  </tr>`;
+}).join("");
+
+// Debt stack
+const stackContainer = document.getElementById("stack-container");
+stackContainer.innerHTML = STACK_DATA.map(d => {
+  const w = (d.val / MAX_STACK * 100).toFixed(0);
+  return `<div class="stack-item">
+    <div class="stack-tranche">${d.name}</div>
+    <div class="stack-meta">${d.seniority} &nbsp;·&nbsp; ${d.rate} &nbsp;·&nbsp; ${d.maturity}</div>
+    <div class="stack-bar-wrap"><div class="stack-bar" style="width:${w}%;background:${STATUS_COLOR[d.status]};"></div></div>
+    <div class="stack-val">$${(d.val/1000).toFixed(2)}B</div>
+    ${pillHtml(d.status, d.status.toUpperCase())}
+  </div>`;
+}).join("");
+
+// Shock matrix
+const ebitdaShocks = [0, 0.10, 0.20, 0.30, 0.40, 0.50];
+const debtShocks   = [0, 0.05, 0.10, 0.20, 0.30];
+const BASE_DEBT = 3330, BASE_CASH = 872, BASE_EBITDA = 101, THRESH = 5.50;
+
+let matHtml = `<table class="shock-table"><thead><tr><th class="shock-label" style="background:#F7F9FC;color:#8A9BB0;">EBITDA ↓ / Debt →</th>`;
+debtShocks.forEach(d => { matHtml += `<th>Debt +${(d*100).toFixed(0)}%</th>`; });
+matHtml += `</tr></thead><tbody>`;
+
+ebitdaShocks.forEach(e => {
+  const sEbitda = BASE_EBITDA * (1 - e);
+  matHtml += `<tr><td class="shock-label">EBITDA –${(e*100).toFixed(0)}%</td>`;
+  debtShocks.forEach(d => {
+    const sDebt = BASE_DEBT * (1 + d);
+    let cls, txt;
+    if (sEbitda <= 0) {
+      cls = "shock-breach"; txt = "N/M";
+    } else {
+      const nlr = (sDebt - BASE_CASH) / sEbitda;
+      const breached = nlr > THRESH;
+      cls = breached ? "shock-breach" : (Math.abs(nlr - THRESH)/THRESH < 0.10 ? "shock-watch" : "shock-ok");
+      txt = nlr.toFixed(1) + "x";
+    }
+    matHtml += `<td class="${cls}">${txt}</td>`;
+  });
+  matHtml += `</tr>`;
+});
+matHtml += `</tbody></table>`;
+document.getElementById("shock-matrix").innerHTML = matHtml;
+</script>
+</body>
+</html>
