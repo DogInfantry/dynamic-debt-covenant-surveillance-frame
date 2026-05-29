@@ -811,3 +811,143 @@ LUMEN_TECHNOLOGIES: RealCaseRecord = {
 CASE_REGISTRY["BHC"]  = BAUSCH_HEALTH
 CASE_REGISTRY["M"]    = MACYS_INC
 CASE_REGISTRY["LUMN"] = LUMEN_TECHNOLOGIES
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  9. SPIRIT AIRLINES — CHAPTER 11 (Filed Nov 18, 2024)
+#     Sector: Ultra-Low-Cost Carrier (ULCC) — Commercial Aviation
+#     Source: 10-K FY2023 (filed Mar 4, 2024) | CIK 0001498710
+#           + Ch.11 First-Day Declaration (SDNY, Nov 18, 2024)
+#           + Spirit Airlines Disclosure Statement (Jan 2025)
+#     Note: DoJ blocked merger with Frontier (Jul 2023) and JetBlue (Jan 2024).
+#           Filed voluntary Ch.11 under crushing debt load and structural losses.
+#           Emerged from bankruptcy May 2025 as substantially smaller carrier.
+# ─────────────────────────────────────────────────────────────────────────────
+SPIRIT_AIRLINES: RealCaseRecord = {
+    "name": "Spirit Airlines Inc.",
+    "ticker": "SAVE",
+    "sector": "Aviation — Ultra-Low-Cost Carrier (ULCC)",
+    "exchange": "NYSE (delisted Nov 2024 — Ch.11)",
+    "filing": "10-K FY2023 (filed Mar 4, 2024) + Ch.11 First-Day Declaration (Nov 18, 2024)",
+    "as_of": "December 31, 2023",
+    "currency": "USD",
+    "units": "millions",
+    "total_debt": 3_330.0,         # $1.1B Loyalty Notes + $841M aircraft-backed bonds + $500M TL + ~$889M other
+    "cash": 872.0,                 # unrestricted cash + short-term investments per 10-K
+    "ebitda_ltm": 101.0,           # Adjusted EBITDA FY2023 per 10-K (post-restructuring addbacks)
+    "revenue_ltm": 5_364.0,
+    "interest_expense_ltm": 285.0,
+    "capex_ltm": 334.0,            # net fleet-growth CapEx (sale-leaseback adjusted)
+    "credit_rating": "D",          # downgraded to D by S&P on filing date Nov 18, 2024
+    "outlook": "Chapter 11 — Restructuring",
+    "enterprise_value_usd_m": 2_100.0,   # implied EV from DIP + exit financing negotiations
+    "covenants": [
+        {
+            "name": "Consolidated Net Leverage Ratio",
+            "type": "leverage",
+            "threshold": 5.50,
+            "actual": round((3_330 - 872) / 101, 2),   # 24.33x — catastrophic breach
+            "operator": "lte",
+            "unit": None,
+            "source": "Spirit Airlines 2021 Term Loan Credit Agreement §7.1 — 10-K FY2023 Note 9",
+        },
+        {
+            "name": "Interest Coverage Ratio",
+            "type": "coverage",
+            "threshold": 1.50,
+            "actual": round(101 / 285, 2),              # 0.35x — deep breach
+            "operator": "gte",
+            "unit": None,
+            "source": "Spirit Airlines Term Loan Agreement §7.2 — EBITDA / Cash Interest",
+        },
+        {
+            "name": "Fixed Charge Coverage Ratio",
+            "type": "fccr",
+            "threshold": 1.00,
+            "actual": round((101 - 334) / 285, 2),      # -0.82x — severe breach (CapEx > EBITDA)
+            "operator": "gte",
+            "unit": None,
+            "source": "Senior Secured Notes Indenture §4.09 — Fixed Charge Coverage (fleet CapEx intensive)",
+        },
+        {
+            "name": "Minimum Unrestricted Cash",
+            "type": "liquidity",
+            "threshold": 500.0,
+            "actual": 872.0,                            # technically compliant but burning fast
+            "operator": "gte",
+            "unit": "$M",
+            "source": "Spirit Airlines Loyalty Notes Indenture — Minimum Liquidity Covenant (§4.12)",
+        },
+    ],
+    "debt_stack": [
+        {
+            "tranche": "$841M Enhanced Equipment Trust Certificates (EETC)",
+            "face_value_usd_m": 841,
+            "seniority": "Aircraft-Secured (1st Lien)",
+            "rate": "3.375%–4.10% Fixed (A/B tranches)",
+            "maturity": "2025-08-15",
+            "lender": "Institutional investors / ABS market",
+            "status": "breach",
+            "cross_default_clause": True,
+        },
+        {
+            "tranche": "$500M Term Loan B (2021)",
+            "face_value_usd_m": 500,
+            "seniority": "Senior Secured (IP / slots collateral)",
+            "rate": "SOFR + 525 bps (floor 1.00%)",
+            "maturity": "2025-09-30",
+            "lender": "Bank of America / Goldman Sachs syndicate",
+            "status": "breach",
+            "cross_default_clause": True,
+        },
+        {
+            "tranche": "$1,100M Loyalty/Affinity Secured Notes (2025)",
+            "face_value_usd_m": 1_100,
+            "seniority": "Senior Secured (Free Spirit loyalty program)",
+            "rate": "8.00% Fixed",
+            "maturity": "2025-09-20",
+            "lender": "Public noteholders",
+            "status": "breach",
+            "cross_default_clause": True,
+        },
+        {
+            "tranche": "$889M Sale-Leaseback Obligations + Other",
+            "face_value_usd_m": 889,
+            "seniority": "Senior Unsecured / Lease Claims",
+            "rate": "Various (5.25%–9.50%)",
+            "maturity": "2026–2028",
+            "lender": "Aircraft lessors (AerCap, GECAS, Air Lease)",
+            "status": "breach",
+            "cross_default_clause": False,
+        },
+    ],
+    "trend_quarters": ["Q4-21", "Q1-22", "Q2-22", "Q3-22", "Q4-22", "Q1-23", "Q2-23", "Q4-23"],
+    "trend_nlr":       [8.21,    9.44,   13.82,   18.90,   21.44,   22.88,   23.71,   24.33],
+    "trend_icr":       [0.48,    0.41,    0.39,    0.37,    0.35,    0.36,    0.35,    0.35],
+    "case_notes": (
+        "Spirit Airlines was the most leveraged major US carrier entering 2024. "
+        "The company's ULCC model — ultra-stripped fares, unbundled ancillary revenue — "
+        "generated thin margins in normal conditions and proved unable to sustain the "
+        "debt load accumulated during COVID-era fleet financing. Three sequential M&A "
+        "failures (Frontier deal terminated Jul 2023, JetBlue merger blocked by DoJ "
+        "antitrust ruling Jan 2024) left Spirit as a standalone carrier with no strategic "
+        "alternative and a $3.3B debt stack against LTM EBITDA of just $101M. "
+        "Net leverage reached 24.33x — the highest in this portfolio — versus a 5.50x "
+        "covenant ceiling. Interest coverage collapsed to 0.35x as fuel, labor, and "
+        "aircraft costs structurally exceeded EBITDA generation capacity. "
+        "The company filed voluntary Chapter 11 in the Southern District of New York "
+        "on November 18, 2024. The restructuring proposal provided for a full equitization "
+        "of the $1.1B Loyalty Notes and partial recovery for EETC holders via "
+        "aircraft rejections and lease renegotiations. Unsecured creditors received "
+        "nominal recovery. Spirit emerged from bankruptcy in May 2025 as a substantially "
+        "smaller carrier (~90 aircraft vs ~200 pre-filing) with ~$795M in exit financing "
+        "and equity held by former Loyalty Note holders. "
+        "Status: CHAPTER 11 FILED — all four covenants in catastrophic breach; "
+        "cross-default cascade triggered across all secured tranches."
+    ),
+    "filing_date": "November 18, 2024",
+    "jurisdiction": "SDNY Bankruptcy Court — Case No. 24-11988 (SHL)",
+    "sec_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001498710&type=10-K",
+}
+
+# Register
+CASE_REGISTRY["SAVE"] = SPIRIT_AIRLINES
